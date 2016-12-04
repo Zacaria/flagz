@@ -26,8 +26,6 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-console.log('port', process.env.OPENSHIFT_NODEJS_PORT, 'ip',  process.env.OPENSHIFT_NODEJS_IP);
-
 server.listen(port, process.env.OPENSHIFT_NODEJS_IP);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -90,4 +88,5 @@ function onListening() {
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     console.log('Listening on ' + bind);
+    console.log('port', process.env.OPENSHIFT_NODEJS_PORT, 'ip',  process.env.OPENSHIFT_NODEJS_IP);
 }
