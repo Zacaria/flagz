@@ -4,7 +4,7 @@
   "description": "flagz POC",
   "main": "start.js",
   "scripts": {
-    "start": "node --use_strict start.js",
+    "start": "node --use_strict start.js --exec babel-node",
     "serve": "nodemon start.js --exec babel-node",
     "test": "npm test"
   },
