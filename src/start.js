@@ -8,15 +8,6 @@ const cluster = require('cluster'),
 
 let stopping = false;
 
-//Test if crypto is available
-let crypto;
-try {
-  crypto = require('crypto');
-} catch (err) {
-  console.log('crypto support is disabled!');
-}
-
-
 cluster.on('disconnect', function(worker) {
   if (production) {
     if (!stopping) {

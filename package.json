@@ -4,8 +4,9 @@
   "description": "flagz POC",
   "main": "start.js",
   "scripts": {
-    "start": "node --use_strict start.js --exec babel-node",
-    "serve": "nodemon start.js --exec babel-node",
+    "start": "node dist/start.js",
+    "serve": "nodemon src/start.js --exec babel-node",
+    "build": "babel src -d dist",
     "test": "npm test"
   },
   "author": "Zacaria Halftasoeur",
