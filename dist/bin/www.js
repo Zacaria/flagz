@@ -19,7 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || '8080');
 _app2.default.set('port', port);
 
 /**
@@ -32,7 +32,7 @@ var server = _http2.default.createServer(_app2.default);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port, process.env.OPENSHIFT_NODEJS_IP);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -90,4 +90,5 @@ function onListening() {
     var addr = server.address();
     var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     console.log('Listening on ' + bind);
+    console.log('port', process.env.OPENSHIFT_NODEJS_PORT, 'ip', process.env.OPENSHIFT_NODEJS_IP);
 }
