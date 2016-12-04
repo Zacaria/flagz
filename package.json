@@ -5,13 +5,13 @@
   "main": "start.js",
   "scripts": {
     "start": "node --use_strict start.js",
-    "serve": "nodemon ./bin/www --exec babel-node",
+    "serve": "nodemon start.js --exec babel-node",
     "test": "npm test"
   },
   "author": "Zacaria Halftasoeur",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^0.8.7",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.3",

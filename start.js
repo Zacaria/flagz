@@ -1,3 +1,4 @@
+'use strict';
 const cluster = require('cluster'),
       stopSignals = [
         'SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
@@ -6,6 +7,15 @@ const cluster = require('cluster'),
       production = process.env.NODE_ENV == 'production';
 
 let stopping = false;
+
+//Test if crypto is available
+let crypto;
+try {
+  crypto = require('crypto');
+} catch (err) {
+  console.log('crypto support is disabled!');
+}
+
 
 cluster.on('disconnect', function(worker) {
   if (production) {
