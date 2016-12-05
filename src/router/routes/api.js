@@ -24,23 +24,33 @@ router.get('/messages', (req, res) => {
         }, (err) => {
             res.json({
                 success: false,
-                err: err.errmsg
+                err    : err.errmsg
             })
         });
 });
 
-router.get('/messages', (req, res) => {
-    Message.find({})
+router.get('/messages/@:center', (req, res) => {
+    const center = req.params.center.split(',').map(Number);
+
+    Message.find({
+            location: {
+                $geoWithin: {
+                    $centerSphere: [center, 100 / 3963.2]
+                }
+            }
+        })
         .then((messages) => {
-            res.json(messages);
+            res.json({
+                messages,
+                success: true
+            });
         }, (err) => {
             res.json({
-                success: false,
-                err: err.errmsg
-            })
+                err: err.errmsg,
+                success: false
+            });
         });
 });
-
 
 router.post('/message', (req, res) => {
     const message = Message({

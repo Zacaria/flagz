@@ -45,13 +45,24 @@ router.get('/messages', function (req, res) {
     });
 });
 
-router.get('/messages', function (req, res) {
-    _message2.default.find({}).then(function (messages) {
-        res.json(messages);
+router.get('/messages/@:center', function (req, res) {
+    var center = req.params.center.split(',').map(Number);
+
+    _message2.default.find({
+        location: {
+            $geoWithin: {
+                $centerSphere: [center, 100 / 3963.2]
+            }
+        }
+    }).then(function (messages) {
+        res.json({
+            messages: messages,
+            success: true
+        });
     }, function (err) {
         res.json({
-            success: false,
-            err: err.errmsg
+            err: err.errmsg,
+            success: false
         });
     });
 });

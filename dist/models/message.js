@@ -26,10 +26,9 @@ var message = _mongoose2.default.model('Message', new Schema({
         type: Date,
         default: Date.now
     },
-    position: {
-        n: Number,
-        e: Number,
-        h: Number
+    location: {
+        type: [Number],
+        index: '2dshpere'
     },
     orientation: {
         x: Number,
