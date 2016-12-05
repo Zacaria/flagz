@@ -70,7 +70,8 @@ router.get('/messages/@:center', function (req, res) {
 router.post('/message', function (req, res) {
     var message = (0, _message2.default)({
         author: req.body.author,
-        text: req.body.text
+        text: req.body.text,
+        location: req.body.location.split(',').map(Number)
     });
 
     message.save().then(function (message) {

@@ -55,7 +55,8 @@ router.get('/messages/@:center', (req, res) => {
 router.post('/message', (req, res) => {
     const message = Message({
         author: req.body.author,
-        text  : req.body.text
+        text  : req.body.text,
+        location: req.body.location.split(',').map(Number)
     });
 
     message
