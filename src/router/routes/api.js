@@ -3,6 +3,7 @@ import express from 'express';
 const router = express.Router();
 import User from '../../models/user';
 import Message from '../../models/message';
+import {EARTH_KM} from '../../config/constant';
 
 router.get('/', (req, res) => {
     res.json({
@@ -31,11 +32,12 @@ router.get('/messages', (req, res) => {
 
 router.get('/messages/@:center', (req, res) => {
     const center = req.params.center.split(',').map(Number);
+    const range = req.params.r;
 
     Message.find({
             location: {
                 $geoWithin: {
-                    $centerSphere: [center, 100 / 3963.2]
+                    $centerSphere: [center, 100 / EARTH_KM]
                 }
             }
         })
