@@ -30,14 +30,14 @@ router.get('/messages', (req, res) => {
         });
 });
 
-router.get('/messages/@:center', (req, res) => {
+router.get('/messages/@:center&r=:r', (req, res) => {
     const center = req.params.center.split(',').map(Number);
     const range = req.params.r;
 
     Message.find({
             location: {
                 $geoWithin: {
-                    $centerSphere: [center, 100 / EARTH_KM]
+                    $centerSphere: [center, range / EARTH_KM]
                 }
             }
         })
