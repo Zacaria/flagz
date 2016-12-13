@@ -9,7 +9,7 @@ const app = express.Router();
 
 app.get('/', (req, res) => {
     res.json({
-        message: 'Welcome'
+        message: 'Welcome, doc incoming !'
     });
 });
 
