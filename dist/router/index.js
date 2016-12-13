@@ -30,7 +30,7 @@ var app = _express2.default.Router();
 
 app.get('/', function (req, res) {
     res.json({
-        message: 'Welcome, doc incoming !'
+        message: 'Welcome guys, doc incoming !'
     });
 });
 
