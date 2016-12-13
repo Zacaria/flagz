@@ -16,6 +16,8 @@ var _message = require('../../models/message');
 
 var _message2 = _interopRequireDefault(_message);
 
+var _constant = require('../../config/constant');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
@@ -45,13 +47,14 @@ router.get('/messages', function (req, res) {
     });
 });
 
-router.get('/messages/@:center', function (req, res) {
+router.get('/messages/@:center&r=:r', function (req, res) {
     var center = req.params.center.split(',').map(Number);
+    var range = req.params.r;
 
     _message2.default.find({
         location: {
             $geoWithin: {
-                $centerSphere: [center, 100 / 3963.2]
+                $centerSphere: [center, range / _constant.EARTH_KM]
             }
         }
     }).then(function (messages) {
