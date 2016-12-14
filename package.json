@@ -1,6 +1,6 @@
 {
   "name": "flagz",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "flagz POC",
   "main": "start.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "license": "MIT",
   "apidoc": {
     "title": "FlagZ Documentation",
-    "url" : "http://flagz-chtatarz.rhcloud.com/doc"
+    "url": "http://flagz-chtatarz.rhcloud.com/doc"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
