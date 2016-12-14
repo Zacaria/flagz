@@ -9,11 +9,17 @@ const app = express.Router();
 
 app.get('/', (req, res) => {
     res.json({
-        message: 'Welcome guys, doc incoming !'
+        message: 'Welcome guys, doc currently building !',
+        doc: 'http://flagz-chtatarz.rhcloud.com/doc'
     });
 });
 
-//Openshift required
+/**
+ * @api {get} /health Request Instance health
+ * @apiDescription Required by openshift to ensure the server is running
+ * @apiName Health
+ * @apiGroup Openshift
+ */
 app.get('/health', (req, res) => {
     res.writeHead(200);
     res.end();

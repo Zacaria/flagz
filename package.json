@@ -12,9 +12,9 @@
     "deploy-patch": "npm version patch && npm run deploy",
     "deploy-minor": "npm version minor && npm run deploy",
     "deploy-major": "npm version major && npm run deploy",
-    "preversion": "npm run build && npm run git-dist",
+    "preversion": "npm run build && npm run doc && npm run git-dist",
     "postversion": "git push",
-    "deploy": "npm version %npm_package_config_version%",
+    "doc": "apidoc -i src/ -o doc/",
     "test": "npm test"
   },
   "config": {
@@ -22,6 +22,10 @@
   },
   "author": "Zacaria Halftasoeur",
   "license": "MIT",
+  "apidoc": {
+    "title": "FlagZ Documentation",
+    "url" : "http://flagz-chtatarz.rhcloud.com/doc"
+  },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
