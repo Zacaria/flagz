@@ -9,10 +9,16 @@
     "build": "babel src -d dist",
     "git-dist": "git add --all && git commit -m \"[UP] : deploy dist\"",
     "git-bump": "git add package.json && git commit -m \"[BUMP] : version\"",
-    "deploy-patch": "npm run build && npm run git-dist && npm version patch && git push",
-    "deploy-minor": "npm run build && npm run git-dist && npm version minor && git push",
-    "deploy-major": "npm run build && npm run git-dist && npm version major && git push",
+    "deploy-patch": "npm version patch && npm run deploy",
+    "deploy-minor": "npm version minor && npm run deploy",
+    "deploy-major": "npm version major && npm run deploy",
+    "preversion": "npm run build && npm run git-dist",
+    "postversion": "git push",
+    "deploy": "npm version %npm_package_config_version%",
     "test": "npm test"
+  },
+  "config": {
+    "version": "patch"
   },
   "author": "Zacaria Halftasoeur",
   "license": "MIT",
