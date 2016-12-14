@@ -24,7 +24,7 @@
   "license": "MIT",
   "apidoc": {
     "title": "FlagZ Documentation",
-    "url": "http://flagz-chtatarz.rhcloud.com/doc"
+    "url": "http://flagz-chtatarz.rhcloud.com"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
