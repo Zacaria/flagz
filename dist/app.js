@@ -43,10 +43,12 @@ var app = (0, _express2.default)();
 (0, _database2.default)();
 
 app.use(_bodyParser2.default.urlencoded({ extended: false }));
+
 app.use(_bodyParser2.default.json());
 app.use((0, _morgan2.default)('dev'));
 app.use((0, _cookieParser2.default)());
 
+app.use('/doc', _express2.default.static(_path2.default.join(__dirname + '/../doc')));
 app.use('/', _router2.default);
 
 exports.default = app;
