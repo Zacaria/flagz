@@ -41,7 +41,7 @@ router.post('/signup', function (req, res) {
         }
 
         console.log('created', user);
-        res.json({ success: true });
+        res.json({ success: true, id: user._id });
     });
 });
 

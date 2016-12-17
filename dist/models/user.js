@@ -18,7 +18,6 @@ var _mongoose2 = _interopRequireDefault(_mongoose);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SALT_WORK_FACTOR = 10;
 var Schema = _mongoose2.default.Schema;
 
 var UserSchema = new Schema({
