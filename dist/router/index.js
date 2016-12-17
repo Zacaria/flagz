@@ -38,7 +38,7 @@ app.get('/', function (req, res) {
     res.json({
         message: 'Welcome guys, doc currently building !',
         doc: 'http://flagz-chtatarz.rhcloud.com/doc',
-        version: process.env.npm_package_version
+        version: process.env
     });
 });
 
