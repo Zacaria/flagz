@@ -6,15 +6,15 @@
   "scripts": {
     "start": "node dist/start.js",
     "serve": "nodemon src/start.js --exec babel-node",
-    "build": "babel src -d dist",
-    "git-dist": "git add --all && git commit -m \"[UP] : deploy dist\"",
-    "git-bump": "git add package.json && git commit -m \"[BUMP] : version\"",
     "deploy-patch": "npm version patch && npm run deploy",
     "deploy-minor": "npm version minor && npm run deploy",
     "deploy-major": "npm version major && npm run deploy",
     "preversion": "npm run build && npm run doc && npm run git-dist",
-    "postversion": "git push",
+    "build": "babel src -d dist",
     "doc": "apidoc -i src/ -o doc/",
+    "git-dist": "git add --all && git commit -m \"[UP] : deploy dist\"",
+    "postversion": "git push",
+
     "test": "npm test"
   },
   "config": {
