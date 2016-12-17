@@ -14,6 +14,7 @@
     "doc": "apidoc -i src/ -o doc/",
     "git-dist": "git add --all && git commit -m \"[UP] : deploy dist\"",
     "postversion": "git push",
+    "deploy-slient": "npm run preversion && npm run postversion",
     "test": "npm test"
   },
   "config": {
