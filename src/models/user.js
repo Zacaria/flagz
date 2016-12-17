@@ -3,8 +3,7 @@
 import bcrypt from 'bcrypt-nodejs';
 import crypto from 'crypto';
 import mongoose from 'mongoose';
-const SALT_WORK_FACTOR = 10;
-const Schema           = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     name    : {
@@ -25,7 +24,7 @@ UserSchema.pre('save', function (next) {
     if (!user.isModified('password')) return next();
 
     bcrypt.hash(user.password, null, null, (err, hash) => {
-        if (err){
+        if (err) {
             console.log(err);
             return next(err);
         }
