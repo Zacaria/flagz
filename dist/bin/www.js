@@ -89,6 +89,5 @@ function onError(error) {
 function onListening() {
     var addr = server.address();
     var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-    console.log('Listening on ' + bind);
-    console.log('port', process.env.OPENSHIFT_NODEJS_PORT, 'ip', process.env.OPENSHIFT_NODEJS_IP);
+    console.log('Listening on ' + bind, 'ip', process.env.OPENSHIFT_NODEJS_IP);
 }
