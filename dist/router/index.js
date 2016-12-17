@@ -28,10 +28,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var app = _express2.default.Router();
 
+/**
+ * @api {get} / Flagz Root
+ * @apiName Root
+ * @apiDescription The rocking flagz api
+ * @apiGroup API
+ */
 app.get('/', function (req, res) {
     res.json({
         message: 'Welcome guys, doc currently building !',
-        doc: 'http://flagz-chtatarz.rhcloud.com/doc'
+        doc: 'http://flagz-chtatarz.rhcloud.com/doc',
+        version: process.env.npm_package_version
     });
 });
 

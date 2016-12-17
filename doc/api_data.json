@@ -2,6 +2,17 @@
   {
     "type": "get",
     "url": "/",
+    "title": "Flagz Root",
+    "name": "Root",
+    "description": "<p>The rocking flagz api</p>",
+    "group": "API",
+    "version": "0.0.0",
+    "filename": "src/router/index.js",
+    "groupTitle": "API"
+  },
+  {
+    "type": "get",
+    "url": "/",
     "title": "Api Root",
     "name": "Root",
     "group": "API",

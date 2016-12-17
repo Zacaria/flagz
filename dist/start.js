@@ -1,33 +1,43 @@
 'use strict';
 
-var cluster = require('cluster'),
-    stopSignals = ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT', 'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'],
-    production = process.env.NODE_ENV == 'production';
+var _cluster = require('cluster');
+
+var _cluster2 = _interopRequireDefault(_cluster);
+
+var _os = require('os');
+
+var _os2 = _interopRequireDefault(_os);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var numCPUs = _os2.default.cpus().length;
+var stopSignals = ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT', 'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'];
+var production = process.env.NODE_ENV == 'production';
 
 var stopping = false;
 
-cluster.on('disconnect', function (worker) {
+_cluster2.default.on('disconnect', function (worker) {
   if (production) {
     if (!stopping) {
-      cluster.fork();
+      _cluster2.default.fork();
     }
   } else {
     process.exit(1);
   }
 });
 
-if (cluster.isMaster) {
-  var workerCount = process.env.NODE_CLUSTER_WORKERS || 4;
+if (_cluster2.default.isMaster) {
+  var workerCount = process.env.NODE_CLUSTER_WORKERS || numCPUs;
   console.log('Starting ' + workerCount + ' workers...');
   for (var i = 0; i < workerCount; i++) {
-    cluster.fork();
+    _cluster2.default.fork();
   }
   if (production) {
     stopSignals.forEach(function (signal) {
       process.on(signal, function () {
         console.log('Got ' + signal + ', stopping workers...');
         stopping = true;
-        cluster.disconnect(function () {
+        _cluster2.default.disconnect(function () {
           console.log('All workers stopped, exiting.');
           process.exit(0);
         });
