@@ -7,6 +7,12 @@ import infoRoutes from './routes/info';
 import User from '../models/user';
 const app = express.Router();
 
+/**
+ * @api {get} / Flagz Root
+ * @apiName Root
+ * @apiDescription The rocking flagz api
+ * @apiGroup API
+ */
 app.get('/', (req, res) => {
     res.json({
         message: 'Welcome guys, doc currently building !',
