@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 });
 
 /**
- * @api {get} /users
+ * @api {get} /users show users
  * @apiDescription Shows all users
  * @apiName Users
  * @apiGroup User
@@ -32,7 +32,7 @@ router.get('/users', (req, res) => {
 });
 
 /**
- * @api {get} /users/:id
+ * @api {get} /users/:id show user
  * @apiDescription Shows one user
  * @apiName User
  * @apiGroup User
@@ -53,9 +53,9 @@ router.get('/users/:id', (req, res) => {
 });
 
 /**
- * @api {patch} /users/friends
+ * @api {patch} /users/friends update friend list
  * @apiDescription Add or remove a friend
- * @apiName User
+ * @apiName UserPatch update friend
  * @apiGroup User
  * @apiPermission Authentified
  *
