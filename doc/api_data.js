@@ -42,10 +42,30 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/",
+    "title": "Infos root",
+    "name": "Info",
+    "group": "Info",
+    "sampleRequest": [
+      {
+        "url": "/"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/router/routes/info.js",
+    "groupTitle": "Info"
+  },
+  {
+    "type": "get",
     "url": "/poll",
     "title": "Request Poll information",
     "name": "Poll",
     "group": "Info",
+    "sampleRequest": [
+      {
+        "url": "/"
+      }
+    ],
     "version": "0.0.0",
     "filename": "src/router/routes/info.js",
     "groupTitle": "Info"
@@ -68,7 +88,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/message",
+    "url": "/messages",
     "title": "Create",
     "description": "<p>create a message</p>",
     "name": "Message_creation",
@@ -85,18 +105,40 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "center",
-            "description": "<p>position of the center the circular range. ex : @48.7861405,2.3274749</p>"
+            "field": "message",
+            "description": "<p>text</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "String",
             "optional": false,
-            "field": "r",
-            "description": "<p>range of the circular range</p>"
+            "field": "location",
+            "description": "<p>position of the message. ex : @48.7861405,2.3274749</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "orientation",
+            "description": "<p>of the phone</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "restricted",
+            "defaultValue": "false",
+            "description": "<p>true|false if true, the message is visible only by the author's friends</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "orientation not yet fully thinked",
+          "content": "{\n    x: 2,\n    y: 3,\n    z: 4\n}",
+          "type": "json"
+        }
+      ]
     },
     "version": "0.0.0",
     "filename": "src/router/routes/api.js",
@@ -140,6 +182,22 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/messages/:id",
+    "title": "Show by id",
+    "description": "<p>Shows all messages of one user</p>",
+    "name": "Message_user",
+    "group": "Message",
+    "permission": [
+      {
+        "name": "Authentified"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/router/routes/api.js",
+    "groupTitle": "Message"
+  },
+  {
+    "type": "get",
     "url": "/health",
     "title": "Request Instance health",
     "description": "<p>Required by openshift to ensure the server is running</p>",
@@ -151,10 +209,61 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/users/:id",
+    "title": "show user",
+    "description": "<p>Shows one user</p>",
+    "name": "User",
+    "group": "User",
+    "permission": [
+      {
+        "name": "Authentified"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/router/routes/api.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "patch",
+    "url": "/users/friends",
+    "title": "update friend list",
+    "description": "<p>Add or remove a friend</p>",
+    "name": "UserPatch_update_friend",
+    "group": "User",
+    "permission": [
+      {
+        "name": "Authentified"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "user",
+            "description": "<p>to modify</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "user to operate:",
+          "content": "{\n   \"op\": \"insert | delete\"\n   \"id\": \"userId\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/router/routes/api.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
     "url": "/users",
-    "title": "",
+    "title": "show users",
     "description": "<p>Shows all users</p>",
-    "name": "Health",
+    "name": "Users",
     "group": "User",
     "permission": [
       {

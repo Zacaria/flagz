@@ -30,7 +30,11 @@ var UserSchema = new Schema({
         type: String,
         required: true
     },
-    admin: Boolean
+    friends: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }]
 });
 
 UserSchema.pre('save', function (next) {
@@ -55,6 +59,14 @@ UserSchema.methods.comparePassword = function (toTest, next) {
         if (err) return next(err);
         next(null, isMatch);
     });
+};
+
+UserSchema.methods.getUser = function () {
+    var user = this;
+    return {
+        name: user.name,
+        friends: user.friends
+    };
 };
 
 var User = _mongoose2.default.model('User', UserSchema);

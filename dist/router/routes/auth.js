@@ -96,7 +96,7 @@ router.use(function (req, res, next) {
             message: 'wrong token, authentify at /signin'
         });
 
-        req.decoded = decoded;
+        req.user = decoded._doc;
         next();
     });
 });

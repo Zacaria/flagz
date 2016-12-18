@@ -14,6 +14,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
+/**
+ * @api {get} / Infos root
+ * @apiName Info
+ * @apiGroup Info
+ * @apiSampleRequest /
+ */
 router.get('/', function (req, res) {
     res.json({
         message: 'infos root'
@@ -34,6 +40,7 @@ router.get('/gen', function (req, res) {
  * @api {get} /poll Request Poll information
  * @apiName Poll
  * @apiGroup Info
+ * @apiSampleRequest /
  */
 router.get('/poll', function (req, res) {
     res.json((0, _sysInfo.poll)());
