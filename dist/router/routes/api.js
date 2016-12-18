@@ -215,7 +215,7 @@ router.post('/messages', function (req, res) {
     if (!location || !text) {
         res.json({
             success: false,
-            message: 'not enough parameters check the doc !'
+            message: _constant.PARAMS_ERROR
         });
     }
 

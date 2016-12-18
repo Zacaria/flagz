@@ -208,6 +208,77 @@
     "groupTitle": "Openshift"
   },
   {
+    "type": "post",
+    "url": "/signin",
+    "title": "Sign in",
+    "description": "<p>Log in</p>",
+    "name": "Login",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The user name</p>"
+          },
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "password",
+            "description": "<p>The password</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>to use for further authentication, expires in 10 hours</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/router/routes/auth.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/signup",
+    "title": "Sign up",
+    "description": "<p>Create an account</p>",
+    "name": "Signup",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The user name</p>"
+          },
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "password",
+            "description": "<p>The password : bcrypt hashed</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/router/routes/auth.js",
+    "groupTitle": "User"
+  },
+  {
     "type": "get",
     "url": "/users/:id",
     "title": "show user",

@@ -13,3 +13,5 @@ var EARTH_KM = exports.EARTH_KM = 6378.1;
 
 var INSERT = exports.INSERT = 'insert';
 var DELETE = exports.DELETE = 'delete';
+
+var PARAMS_ERROR = exports.PARAMS_ERROR = 'Not enough parameters check the doc !';

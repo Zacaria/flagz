@@ -20,15 +20,25 @@ var _config = require('../../config');
 
 var _config2 = _interopRequireDefault(_config);
 
+var _constant = require('../../config/constant');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
 
+/**
+ * @api {post} /signup Sign up
+ * @apiDescription Create an account
+ * @apiName Signup
+ * @apiGroup User
+ *
+ * @apiParam name The user name
+ * @apiParam password The password : bcrypt hashed
+ */
 router.post('/signup', function (req, res) {
     var user = new _user2.default({
         name: req.body.name,
-        password: req.body.password,
-        admin: false
+        password: req.body.password
     });
 
     user.save(function (err, user) {
@@ -40,14 +50,36 @@ router.post('/signup', function (req, res) {
             return;
         }
 
-        console.log('created', user);
         res.json({ success: true, id: user._id });
     });
 });
 
+/**
+ * @api {post} /signin Sign in
+ * @apiDescription Log in
+ * @apiName Login
+ * @apiGroup User
+ *
+ * @apiParam name The user name
+ * @apiParam password The password
+ *
+ * @apiSuccess (200) {String} token to use for further authentication, expires in 10 hours
+ */
 router.post('/signin', function (req, res) {
+    var _req$body = req.body,
+        name = _req$body.name,
+        password = _req$body.password;
+
+
+    if (!name || !password) {
+        res.json({
+            success: false,
+            message: _constant.PARAMS_ERROR
+        });
+    }
+
     _user2.default.findOne({
-        name: req.body.name
+        name: name
     }, function (err, user) {
         if (err) throw err;
 
@@ -59,7 +91,7 @@ router.post('/signin', function (req, res) {
             return;
         }
 
-        user.comparePassword(req.body.password, function (err, isMatch) {
+        user.comparePassword(password, function (err, isMatch) {
             if (err) throw err;
             if (!isMatch) {
                 req.json({
