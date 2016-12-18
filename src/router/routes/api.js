@@ -3,7 +3,7 @@ import express from 'express';
 const router = express.Router();
 import User from '../../models/user';
 import Message from '../../models/message';
-import {EARTH_KM, INSERT, DELETE} from '../../config/constant';
+import {EARTH_KM, INSERT, DELETE, PARAMS_ERROR} from '../../config/constant';
 
 /**
  * @api {get} / Api Root
@@ -194,7 +194,7 @@ router.post('/messages', (req, res) => {
     if (!location || !text) {
         res.json({
             success: false,
-            message: 'not enough parameters check the doc !'
+            message: PARAMS_ERROR
         })
     }
 

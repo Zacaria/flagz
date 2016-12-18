@@ -1,18 +1,25 @@
 'use strict';
 import express from 'express';
 import jwt from 'jsonwebtoken';
-
 import User from '../../models/user';
-
 import config from '../../config';
+import {PARAMS_ERROR} from '../../config/constant';
 
 const router = express.Router();
 
+/**
+ * @api {post} /signup Sign up
+ * @apiDescription Create an account
+ * @apiName Signup
+ * @apiGroup User
+ *
+ * @apiParam name The user name
+ * @apiParam password The password : bcrypt hashed
+ */
 router.post('/signup', (req, res) => {
     const user = new User({
         name    : req.body.name,
-        password: req.body.password,
-        admin   : false
+        password: req.body.password
     });
 
     user.save((err, user) => {
@@ -24,15 +31,33 @@ router.post('/signup', (req, res) => {
             return;
         }
 
-
-        console.log('created', user);
         res.json({success: true, id: user._id});
     });
 });
 
+/**
+ * @api {post} /signin Sign in
+ * @apiDescription Log in
+ * @apiName Login
+ * @apiGroup User
+ *
+ * @apiParam name The user name
+ * @apiParam password The password
+ *
+ * @apiSuccess (200) {String} token to use for further authentication, expires in 10 hours
+ */
 router.post('/signin', (req, res) => {
+    const {name, password} = req.body;
+
+    if(!name || !password) {
+        res.json({
+            success: false,
+            message: PARAMS_ERROR
+        })
+    }
+
     User.findOne({
-        name: req.body.name
+        name
     }, (err, user) => {
         if (err) throw err;
 
@@ -44,7 +69,7 @@ router.post('/signin', (req, res) => {
             return;
         }
 
-        user.comparePassword(req.body.password, (err, isMatch) => {
+        user.comparePassword(password, (err, isMatch) => {
             if(err) throw err;
             if(!isMatch) {
                 req.json({
@@ -61,7 +86,7 @@ router.post('/signin', (req, res) => {
             res.json({
                 success: true,
                 message: 'Enjoy your token',
-                token  : token
+                token
             });
         });
     });
