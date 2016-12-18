@@ -3,7 +3,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const message = mongoose.model('Message', new Schema({
+const MessageSchema =  new Schema({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -25,7 +25,24 @@ const message = mongoose.model('Message', new Schema({
         x: Number,
         y: Number,
         z: Number
+    },
+    'public': {
+        type: Boolean,
+        default: true
+    },
+    visibility:{
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        }]
     }
-}));
+});
 
-export default message;
+MessageSchema.methods.isVisible = (id) => {
+    return this.public || [this.author, ...this.visibility].includes(id);
+};
+
+const Message = mongoose.model('Message', MessageSchema);
+
+export default Message;

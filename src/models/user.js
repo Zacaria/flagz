@@ -15,7 +15,11 @@ const UserSchema = new Schema({
         type    : String,
         required: true
     },
-    admin   : Boolean
+    friends   : [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }]
 });
 
 UserSchema.pre('save', function (next) {
