@@ -16,7 +16,7 @@ const app = express.Router();
 app.get('/', (req, res) => {
     res.json({
         message: 'Welcome guys, doc currently building !',
-        doc: 'http://flagz-chtatarz.rhcloud.com/doc',
+        doc    : 'http://flagz-chtatarz.rhcloud.com/doc',
         version: process.env
     });
 });

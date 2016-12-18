@@ -46,6 +46,14 @@ UserSchema.methods.comparePassword = function (toTest, next) {
     });
 };
 
+UserSchema.methods.getUser = function() {
+    const user = this;
+    return {
+        name: user.name,
+        friends: user.friends
+    };
+};
+
 const User = mongoose.model('User', UserSchema);
 
 export default User;

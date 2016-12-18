@@ -1,24 +1,25 @@
 'use strict';
 
 import mongoose from 'mongoose';
+import User from './user';
 const Schema = mongoose.Schema;
 
-const MessageSchema =  new Schema({
-    author: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+const MessageSchema = new Schema({
+    author     : {
+        type    : Schema.Types.ObjectId,
+        ref     : 'User',
         required: true
     },
-    text: {
-        type: String,
+    text       : {
+        type    : String,
         required: true
     },
-    date: {
-        type: Date,
+    date       : {
+        type   : Date,
         default: Date.now
     },
-    location: {
-        type: [Number],
+    location   : {
+        type : [Number],
         index: '2dshpere'
     },
     orientation: {
@@ -26,21 +27,42 @@ const MessageSchema =  new Schema({
         y: Number,
         z: Number
     },
-    'public': {
-        type: Boolean,
+    restricted : {
+        type   : Boolean,
         default: true
     },
-    visibility:{
+    visibility : {
         type: [{
-            type: Schema.Types.ObjectId,
-            ref: 'User',
+            type    : Schema.Types.ObjectId,
+            ref     : 'User',
             required: true
         }]
     }
 });
 
-MessageSchema.methods.isVisible = (id) => {
-    return this.public || [this.author, ...this.visibility].includes(id);
+MessageSchema.pre('save', function (next) {
+    let message = this;
+    if (message.restricted) {
+        console.log('restricted');
+        User.findOne({_id: message.author})
+            .then((user) => {
+                console.log(user);
+                message._doc.visibility = user.friends;
+                next();
+            }, err => {
+                next({
+                    success: false,
+                    message: 'author not found',
+                    err    : err.errmsg
+                });
+            })
+    } else {
+        next();
+    }
+});
+
+MessageSchema.methods.isVisible = function (id) {
+    return this.restricted || [this.author, ...this.visibility].includes(id);
 };
 
 const Message = mongoose.model('Message', MessageSchema);
