@@ -37,8 +37,7 @@ var app = _express2.default.Router();
 app.get('/', function (req, res) {
     res.json({
         message: 'Welcome guys, doc currently building !',
-        doc: 'http://flagz-chtatarz.rhcloud.com/doc',
-        version: process.env
+        doc: 'http://flagz-chtatarz.rhcloud.com/doc'
     });
 });
 
