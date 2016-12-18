@@ -51,6 +51,34 @@ router.get('/messages', (req, res) => {
 });
 
 /**
+ * @api {get} /messages/:id Show by id
+ * @apiDescription Shows all messages
+ * @apiName Message
+ * @apiGroup Message
+ * @apiPermission Authentified
+ */
+router.get('/messages/:id', (req, res, next) => {
+    if(req.params.id === 'toto') {
+        console.log('choppé');
+        next();
+    }
+
+    Message.find({
+        author: {
+            $eq: req.params.id
+        }
+    })
+        .then((messages) => {
+            res.json(messages);
+        }, (err) => {
+            res.json({
+                success: false,
+                err    : err.errmsg
+            })
+        });
+});
+
+/**
  * @api {get} /messages/@:center&r=:r Aggregate within sphere
  * @apiDescription Shows all messages within a circular range
  * @apiName Message search
