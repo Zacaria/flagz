@@ -2,25 +2,23 @@
   "name": "flagz",
   "version": "0.5.1",
   "description": "flagz POC",
-  "main": "start.js",
+  "main": "./bin/www.js",
   "scripts": {
-    "start": "node dist/start.js",
-    "serve": "nodemon src/start.js --exec babel-node",
+    "start": "node_modules/.bin/pm2 start dist/bin/www.js -i max",
+    "serve": "nodemon src/bin/www.js --exec babel-node",
+    "clean": "rm -rf dist/ && mkdir dist",
     "deploy-patch": "npm version patch && npm run deploy",
     "deploy-minor": "npm version minor && npm run deploy",
     "deploy-major": "npm version major && npm run deploy",
-    "preversion": "npm run build && npm run doc && npm run git-dist",
-    "build": "babel src -d dist",
+    "preversion": "npm run clean && npm run dist && npm run doc && npm run git-dist",
+    "dist": "babel src -d dist",
     "doc": "apidoc -i src/ -o doc/",
     "git-dist": "git add --all && git commit -m \"[UP] : deploy dist\"",
     "postversion": "git push",
     "deploy-silent": "npm run preversion && npm run postversion",
     "test": "npm test"
   },
-  "config": {
-    "version": "patch"
-  },
-  "author": "Zacaria Halftasoeur",
+  "author": "Zacaria",
   "license": "MIT",
   "apidoc": {
     "title": "FlagZ Documentation",
@@ -34,7 +32,8 @@
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.7.1",
-    "morgan": "^1.7.0"
+    "morgan": "^1.7.0",
+    "pm2": "^2.2.2"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
