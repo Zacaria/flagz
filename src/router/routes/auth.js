@@ -3,6 +3,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../../models/user';
 import {PARAMS_ERROR, SECRET} from '../../constants';
+import * as userService from '../../services/user';
 
 const router = express.Router();
 
@@ -16,9 +17,18 @@ const router = express.Router();
  * @apiParam password The password : bcrypt hashed
  */
 router.post('/signup', (req, res) => {
+    const {name, password} = req.body;
+    if(!name || !password) {
+        res.json({
+            success: false,
+            message: PARAMS_ERROR
+        });
+        return;
+    }
+
     const user = new User({
-        name    : req.body.name,
-        password: req.body.password
+        name,
+        password
     });
 
     user.save((err, user) => {
@@ -47,67 +57,30 @@ router.post('/signup', (req, res) => {
  */
 router.post('/signin', (req, res) => {
     const {name, password} = req.body;
-
-    if(!name || !password) {
-        res.json({
-            success: false,
-            message: PARAMS_ERROR
-        })
-    }
-
-    User.findOne({
-        name
-    }, (err, user) => {
-        if (err) throw err;
-
-        if (!user) {
-            res.json({
-                success: false,
-                message: 'user not found'
-            });
-            return;
-        }
-
-        user.comparePassword(password, (err, isMatch) => {
-            if(err) throw err;
-            if(!isMatch) {
-                req.json({
-                    success: false,
-                    message: 'wrong pw'
-                });
-                return;
-            }
-
-            const token = jwt.sign(user, config.secret, {
-                expiresIn: '10h'
-            });
-
-            res.json({
-                success: true,
-                message: 'Enjoy your token',
-                token
-            });
-        });
-    });
+    userService.authenticate({name, password})
+    .then(({token, message}) => res.json({
+        success: true,
+        message,
+        token
+    }))
+    .catch(({message}) => res.json({
+        success: false,
+        message
+    }));
 });
 
 router.use((req, res, next) => {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-    if (!token) return res.status(403).send({
-        success: false,
-        message: 'No token'
-    });
-
-    jwt.verify(token, SECRET, (err, decoded) => {
-        if (err) return res.json({
-            success: false,
-            message: 'wrong token, authentify at /signin'
-        });
-
+    userService.validateToken({token})
+    .then((decoded) => {
         req.user = decoded._doc;
         next();
     })
+    .catch(({message}) => res.status(403).json({
+        success: false,
+        message
+    }));
 });
 
 export default router;
