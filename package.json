@@ -16,7 +16,7 @@
     "git-dist": "git add --all && git commit -m \"[UP] : deploy dist\"",
     "postversion": "git push",
     "deploy-silent": "npm run preversion && npm run postversion",
-    "test": "npm test"
+    "test": "node_modules/.bin/mocha test"
   },
   "author": "Zacaria",
   "license": "MIT",
@@ -27,6 +27,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
+    "config": "^1.24.0",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.3",
     "express": "^4.14.0",
@@ -40,6 +41,9 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-2": "^6.18.0",
     "browser-sync": "^2.18.2",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.2.0",
     "nodemon": "^1.11.0"
   }
 }
