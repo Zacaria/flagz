@@ -1,4 +1,6 @@
-export const SECRET = 'SECRET';
+//Secret is used creating and verifing web tokens
+//Randomize ?
+export const SECRET = 'secretPassToChangeAndToIgnore';
 export const EARTH_KM = 6378.1;
 
 /**

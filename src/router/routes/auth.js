@@ -2,8 +2,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../../models/user';
-import config from '../../config';
-import {PARAMS_ERROR} from '../../config/constant';
+import {PARAMS_ERROR, SECRET} from '../../constants';
 
 const router = express.Router();
 
@@ -100,7 +99,7 @@ router.use((req, res, next) => {
         message: 'No token'
     });
 
-    jwt.verify(token, config.secret, (err, decoded) => {
+    jwt.verify(token, SECRET, (err, decoded) => {
         if (err) return res.json({
             success: false,
             message: 'wrong token, authentify at /signin'

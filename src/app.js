@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 
 import router from './router';
-import mongoInit from './config/database';
+import mongoInit from './bin/dbInit';
 
 const app = express();
 

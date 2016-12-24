@@ -3,7 +3,7 @@ import express from 'express';
 const router = express.Router();
 import User from '../../models/user';
 import Message from '../../models/message';
-import {EARTH_KM, INSERT, DELETE, PARAMS_ERROR} from '../../config/constant';
+import {EARTH_KM, INSERT, DELETE, PARAMS_ERROR} from '../../constants';
 
 /**
  * @api {get} / Api Root
@@ -114,13 +114,14 @@ router.get('/messages', (req, res) => {
 });
 
 /**
- * @api {get} /messages/:id Show by id
- * @apiDescription Shows all messages of one user
+ * @api {get} /messages/me Show my messages
+ * @apiDescription Shows all messages of connected user
  * @apiName Message user
  * @apiGroup Message
  * @apiPermission Authentified
  */
-router.get('/messages/:id', (req, res) => {
+router.get('/messages/me', (req, res) => {
+    console.log('hey');
     Message.find({
             author: {
                 $eq: req.params.id
@@ -144,27 +145,48 @@ router.get('/messages/:id', (req, res) => {
  * @apiPermission Authentified
  *
  * @apiParam {String} center position of the center the circular range. ex : @48.7861405,2.3274749
- * @apiParam {Number} r range of the circular range
+ * @apiParam {Number} [r=200] range of the circular range in meters
  */
 router.get('/messages/@:center&r=:r', (req, res) => {
     const center = req.params.center.split(',').map(Number);
-    const range  = req.params.r;
+    const range  = req.params.r || 200;
+    console.log('hey');
+    if (!center) {
+        res.json({
+            success: false,
+            message: PARAMS_ERROR
+        });
+    }
 
     Message.find({
+            $or     : [
+                {
+                    restricted: {
+                        $eq: false
+                    }
+                },
+                {
+                    $or: [{
+                        author: req.user
+                    }, {
+                        friends: req.user
+                    }]
+                }],
             location: {
                 $geoWithin: {
                     $centerSphere: [center, range / EARTH_KM]
                 }
             }
         })
-        .then((messages) => {
+        .
+        then((messages) => {
             res.json({
                 messages,
                 success: true
             });
         }, (err) => {
             res.json({
-                err: err.errmsg,
+                err    : err.message,
                 success: false
             });
         });
@@ -199,7 +221,7 @@ router.post('/messages', (req, res) => {
     }
 
     const message = Message({
-        author: req.user,
+        author  : req.user,
         text,
         location: location.split(',').map(Number),
         orientation,

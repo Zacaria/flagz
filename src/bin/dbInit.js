@@ -1,12 +1,13 @@
 'use strict';
 
 import mongoose from 'mongoose';
-import config from '../config';
+import config from 'config';
+//const config = require('./db');
 
 const init = () => {
     
     // default to a 'localhost' configuration:
-    var connection_string = config.database;
+    var connection_string = config.DBHost;
     // if OPENSHIFT env variables are present, use the available connection info:
     if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
         connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +

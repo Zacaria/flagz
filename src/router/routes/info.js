@@ -1,7 +1,7 @@
 'use strict';
 
 import express from 'express';
-import {gen, poll} from '../../config/sys-info';
+import {gen, poll} from '../../constants/sys-info';
 
 const router = express.Router();
 
