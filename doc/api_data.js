@@ -83,7 +83,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "src/router/routes/api.js",
+    "filename": "src/router/routes/messages.js",
     "groupTitle": "Message"
   },
   {
@@ -141,7 +141,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "src/router/routes/api.js",
+    "filename": "src/router/routes/messages.js",
     "groupTitle": "Message"
   },
   {
@@ -169,22 +169,23 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "Number",
-            "optional": false,
+            "optional": true,
             "field": "r",
-            "description": "<p>range of the circular range</p>"
+            "defaultValue": "200",
+            "description": "<p>range of the circular range in meters</p>"
           }
         ]
       }
     },
     "version": "0.0.0",
-    "filename": "src/router/routes/api.js",
+    "filename": "src/router/routes/messages.js",
     "groupTitle": "Message"
   },
   {
     "type": "get",
-    "url": "/messages/:id",
-    "title": "Show by id",
-    "description": "<p>Shows all messages of one user</p>",
+    "url": "/messages/me",
+    "title": "Show my messages",
+    "description": "<p>Shows all messages of connected user</p>",
     "name": "Message_user",
     "group": "Message",
     "permission": [
@@ -193,7 +194,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "src/router/routes/api.js",
+    "filename": "src/router/routes/messages.js",
     "groupTitle": "Message"
   },
   {
@@ -291,7 +292,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "src/router/routes/api.js",
+    "filename": "src/router/routes/users.js",
     "groupTitle": "User"
   },
   {
@@ -326,7 +327,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "src/router/routes/api.js",
+    "filename": "src/router/routes/users.js",
     "groupTitle": "User"
   },
   {
@@ -342,7 +343,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "src/router/routes/api.js",
+    "filename": "src/router/routes/users.js",
     "groupTitle": "User"
   }
 ] });

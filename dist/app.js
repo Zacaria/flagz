@@ -32,15 +32,15 @@ var _router = require('./router');
 
 var _router2 = _interopRequireDefault(_router);
 
-var _database = require('./config/database');
+var _dbInit = require('./bin/dbInit');
 
-var _database2 = _interopRequireDefault(_database);
+var _dbInit2 = _interopRequireDefault(_dbInit);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
 
-(0, _database2.default)();
+(0, _dbInit2.default)();
 
 app.use(_bodyParser2.default.urlencoded({ extended: false }));
 

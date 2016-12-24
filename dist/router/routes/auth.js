@@ -16,11 +16,13 @@ var _user = require('../../models/user');
 
 var _user2 = _interopRequireDefault(_user);
 
-var _config = require('../../config');
+var _constants = require('../../constants');
 
-var _config2 = _interopRequireDefault(_config);
+var _user3 = require('../../services/user');
 
-var _constant = require('../../config/constant');
+var userService = _interopRequireWildcard(_user3);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,9 +38,21 @@ var router = _express2.default.Router();
  * @apiParam password The password : bcrypt hashed
  */
 router.post('/signup', function (req, res) {
+    var _req$body = req.body,
+        name = _req$body.name,
+        password = _req$body.password;
+
+    if (!name || !password) {
+        res.json({
+            success: false,
+            message: _constants.PARAMS_ERROR
+        });
+        return;
+    }
+
     var user = new _user2.default({
-        name: req.body.name,
-        password: req.body.password
+        name: name,
+        password: password
     });
 
     user.save(function (err, user) {
@@ -66,50 +80,23 @@ router.post('/signup', function (req, res) {
  * @apiSuccess (200) {String} token to use for further authentication, expires in 10 hours
  */
 router.post('/signin', function (req, res) {
-    var _req$body = req.body,
-        name = _req$body.name,
-        password = _req$body.password;
+    var _req$body2 = req.body,
+        name = _req$body2.name,
+        password = _req$body2.password;
 
-
-    if (!name || !password) {
-        res.json({
-            success: false,
-            message: _constant.PARAMS_ERROR
+    userService.authenticate({ name: name, password: password }).then(function (_ref) {
+        var token = _ref.token,
+            message = _ref.message;
+        return res.json({
+            success: true,
+            message: message,
+            token: token
         });
-    }
-
-    _user2.default.findOne({
-        name: name
-    }, function (err, user) {
-        if (err) throw err;
-
-        if (!user) {
-            res.json({
-                success: false,
-                message: 'user not found'
-            });
-            return;
-        }
-
-        user.comparePassword(password, function (err, isMatch) {
-            if (err) throw err;
-            if (!isMatch) {
-                req.json({
-                    success: false,
-                    message: 'wrong pw'
-                });
-                return;
-            }
-
-            var token = _jsonwebtoken2.default.sign(user, _config2.default.secret, {
-                expiresIn: '10h'
-            });
-
-            res.json({
-                success: true,
-                message: 'Enjoy your token',
-                token: token
-            });
+    }).catch(function (_ref2) {
+        var message = _ref2.message;
+        return res.json({
+            success: false,
+            message: message
         });
     });
 });
@@ -117,19 +104,15 @@ router.post('/signin', function (req, res) {
 router.use(function (req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-    if (!token) return res.status(403).send({
-        success: false,
-        message: 'No token'
-    });
-
-    _jsonwebtoken2.default.verify(token, _config2.default.secret, function (err, decoded) {
-        if (err) return res.json({
-            success: false,
-            message: 'wrong token, authentify at /signin'
-        });
-
+    userService.validateToken({ token: token }).then(function (decoded) {
         req.user = decoded._doc;
         next();
+    }).catch(function (_ref3) {
+        var message = _ref3.message;
+        return res.status(403).json({
+            success: false,
+            message: message
+        });
     });
 });
 
