@@ -17,8 +17,8 @@ app.get('/', (req, res) => {
     res.json({
         message : 'Welcome guys, doc currently building !',
         doc     : 'http://flagz-chtatarz.rhcloud.com/doc',
-        signup   : req.protocol + '://' + req.get('host') + '/signup',
-        signin   : req.protocol + '://' + req.get('host') + '/signin',
+        signup   : req.protocol + '://' + req.get('host') + '/api/signup',
+        signin   : req.protocol + '://' + req.get('host') + '/api/signin',
         users   : req.protocol + '://' + req.get('host') + '/api/users',
         messages: req.protocol + '://' + req.get('host') + '/api/messages',
     });
@@ -36,7 +36,6 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/info', infoRoutes);
-app.use('/', authRoutes);
 app.use('/api', apiRoutes);
 
 // catch 404 and forward to error handler

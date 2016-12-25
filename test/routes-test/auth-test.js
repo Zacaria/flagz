@@ -26,7 +26,7 @@ describe('Auth', () => {
     describe('/POST signup', () => {
         it('it should not create a user with unsufficient params', (done) => {
             chai.request(server)
-                .post('/signup')
+                .post('/api/signup')
                 .send({
                     name: 'admin'
                 })
@@ -41,7 +41,7 @@ describe('Auth', () => {
 
         it('it should create a user', (done) => {
             chai.request(server)
-                .post('/signup')
+                .post('/api/signup')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -53,7 +53,7 @@ describe('Auth', () => {
 
         it('it should not create a user existing name', (done) => {
             chai.request(server)
-                .post('/signup')
+                .post('/api/signup')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -69,7 +69,7 @@ describe('Auth', () => {
 
         it('it should not authenticate with user not existing', (done) => {
             chai.request(server)
-                .post('/signin')
+                .post('/api/signin')
                 .send({
                     name: 'noone',
                     password: 'wrong'
@@ -85,7 +85,7 @@ describe('Auth', () => {
 
         it('it should not authenticate with wrong pw', (done) => {
             chai.request(server)
-                .post('/signin')
+                .post('/api/signin')
                 .send({
                     name: 'admin',
                     password: 'wrong'
@@ -101,7 +101,7 @@ describe('Auth', () => {
 
         it('it should return a token', (done) => {
             chai.request(server)
-                .post('/signin')
+                .post('/api/signin')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(200);

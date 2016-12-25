@@ -8,7 +8,7 @@ import * as userService from '../../services/user';
 const router = express.Router();
 
 /**
- * @api {post} /signup Sign up
+ * @api {post} /api/signup Sign up
  * @apiDescription Create an account
  * @apiName Signup
  * @apiGroup User
@@ -45,7 +45,7 @@ router.post('/signup', (req, res) => {
 });
 
 /**
- * @api {post} /signin Sign in
+ * @api {post} /api/signin Sign in
  * @apiDescription Log in
  * @apiName Login
  * @apiGroup User
