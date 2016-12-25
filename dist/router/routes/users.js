@@ -12,11 +12,15 @@ var _user = require('../../models/user');
 
 var _user2 = _interopRequireDefault(_user);
 
+var _user3 = require('../../services/user');
+
+var userService = _interopRequireWildcard(_user3);
+
 var _constants = require('../../constants');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
 
@@ -29,9 +33,18 @@ var router = _express2.default.Router();
  * @apiPermission Authentified
  */
 router.get('/', function (req, res) {
-    _user2.default.find({}, function (err, users) {
-        if (err) throw err;
-        res.json(users);
+    userService.find().then(function (_ref) {
+        var users = _ref.users;
+        return res.json({
+            success: true,
+            users: users
+        });
+    }).catch(function (_ref2) {
+        var message = _ref2.message;
+        return res.json({
+            success: false,
+            message: message
+        });
     });
 });
 
@@ -41,23 +54,29 @@ router.get('/', function (req, res) {
  * @apiName User
  * @apiGroup User
  * @apiPermission Authentified
+ * @apiParam user to modify
  */
 router.get('/:id', function (req, res) {
-    _user2.default.findOne({
-        _id: { $eq: req.params.id }
-    }).then(function (user) {
-        res.json(user.getUser());
-    }, function (err) {
+    userService.findOne({ id: req.params.id }).then(function (_ref3) {
+        var user = _ref3.user;
+
+        res.json({
+            success: true,
+            user: user
+        });
+    }).catch(function (_ref4) {
+        var message = _ref4.message;
+
         res.json({
             success: false,
-            err: err.errmsg
+            message: message
         });
     });
 });
 
 /**
  * @api {patch} /users/friends update friend list
- * @apiDescription Add or remove a friend
+ * @apiDescription Add or remove a friend to the current user
  * @apiName UserPatch update friend
  * @apiGroup User
  * @apiPermission Authentified
@@ -70,29 +89,33 @@ router.get('/:id', function (req, res) {
  *   }
  */
 router.patch('/friends', function (req, res) {
-    _user2.default.findOne({
-        _id: req.user
-    }).then(function (user) {
-        var _req$body = req.body,
-            operation = _req$body.op,
-            friend = _req$body.id;
+    var _req$body = req.body,
+        operation = _req$body.op,
+        friendId = _req$body.id;
 
-        var indexOfFriend = user.friends.indexOf(friend);
-        if (operation === _constants.INSERT) {
-            if (indexOfFriend == -1) user.friends = [].concat(_toConsumableArray(user.friends), [friend]);
-        } else if (operation === _constants.DELETE) {
-            user.friends.splice(indexOfFriend, 1);
-        }
-        user.save().then(function (user) {
-            res.json({
-                success: true,
-                user: user
-            });
+    if (operation !== _constants.INSERT && operation !== _constants.DELETE) {
+        return res.json({
+            success: false,
+            message: 'Unrecognized operation [insert | delete]'
         });
-    }, function (err) {
+    }
+
+    userService.findOne({ id: friendId }).then(function (friend) {
+        return userService.findOne({ id: req.user }, false);
+    }).then(function (_ref5) {
+        var user = _ref5.user;
+        return userService.patchFriends({ user: user, operation: operation, friendId: friendId });
+    }).then(function (_ref6) {
+        var user = _ref6.user;
+
+        res.json({
+            success: true,
+            user: user
+        });
+    }).catch(function (err) {
         res.json({
             success: false,
-            err: err.errmsg
+            message: err
         });
     });
 });

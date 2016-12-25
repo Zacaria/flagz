@@ -4,16 +4,12 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var os = require('os');
-var exec = require('child_process').execSync;
 var env = process.env;
 
 var gen = exports.gen = function gen() {
     return [{
         name: 'Node.js Version',
         value: process.version.replace('v', '')
-    }, {
-        name: 'NPM Version',
-        value: exec('npm --version').toString().replace(os.EOL, '')
     }, {
         name: 'OS Type',
         value: os.type()

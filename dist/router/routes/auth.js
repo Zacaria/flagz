@@ -29,7 +29,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var router = _express2.default.Router();
 
 /**
- * @api {post} /signup Sign up
+ * @api {post} /api/signup Sign up
  * @apiDescription Create an account
  * @apiName Signup
  * @apiGroup User
@@ -42,34 +42,23 @@ router.post('/signup', function (req, res) {
         name = _req$body.name,
         password = _req$body.password;
 
-    if (!name || !password) {
-        res.json({
-            success: false,
-            message: _constants.PARAMS_ERROR
+    userService.createUser({ name: name, password: password }).then(function (_ref) {
+        var id = _ref.id;
+        return res.json({
+            success: true,
+            id: id
         });
-        return;
-    }
-
-    var user = new _user2.default({
-        name: name,
-        password: password
-    });
-
-    user.save(function (err, user) {
-        if (err) {
-            res.json({
-                success: false,
-                message: err.errmsg
-            });
-            return;
-        }
-
-        res.json({ success: true, id: user._id });
+    }).catch(function (_ref2) {
+        var message = _ref2.message;
+        return res.json({
+            success: false,
+            message: message
+        });
     });
 });
 
 /**
- * @api {post} /signin Sign in
+ * @api {post} /api/signin Sign in
  * @apiDescription Log in
  * @apiName Login
  * @apiGroup User
@@ -84,16 +73,16 @@ router.post('/signin', function (req, res) {
         name = _req$body2.name,
         password = _req$body2.password;
 
-    userService.authenticate({ name: name, password: password }).then(function (_ref) {
-        var token = _ref.token,
-            message = _ref.message;
+    userService.authenticate({ name: name, password: password }).then(function (_ref3) {
+        var token = _ref3.token,
+            message = _ref3.message;
         return res.json({
             success: true,
             message: message,
             token: token
         });
-    }).catch(function (_ref2) {
-        var message = _ref2.message;
+    }).catch(function (_ref4) {
+        var message = _ref4.message;
         return res.json({
             success: false,
             message: message
@@ -107,8 +96,8 @@ router.use(function (req, res, next) {
     userService.validateToken({ token: token }).then(function (decoded) {
         req.user = decoded._doc;
         next();
-    }).catch(function (_ref3) {
-        var message = _ref3.message;
+    }).catch(function (_ref5) {
+        var message = _ref5.message;
         return res.status(403).json({
             success: false,
             message: message

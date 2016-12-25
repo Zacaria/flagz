@@ -64,6 +64,7 @@ UserSchema.methods.comparePassword = function (toTest, next) {
 UserSchema.methods.getUser = function () {
     var user = this;
     return {
+        id: user._id,
         name: user.name,
         friends: user.friends
     };

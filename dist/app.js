@@ -28,6 +28,10 @@ var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
+var _helmet = require('helmet');
+
+var _helmet2 = _interopRequireDefault(_helmet);
+
 var _router = require('./router');
 
 var _router2 = _interopRequireDefault(_router);
@@ -41,6 +45,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var app = (0, _express2.default)();
 
 (0, _dbInit2.default)();
+
+app.use((0, _helmet2.default)());
 
 app.use(_bodyParser2.default.urlencoded({ extended: false }));
 

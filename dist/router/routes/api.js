@@ -8,6 +8,10 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
+var _auth = require('./auth');
+
+var _auth2 = _interopRequireDefault(_auth);
+
 var _users = require('./users');
 
 var _users2 = _interopRequireDefault(_users);
@@ -21,6 +25,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var router = _express2.default.Router();
 
 
+router.use('/', _auth2.default);
 /**
  * @api {get} / Api Root
  * @apiName Root

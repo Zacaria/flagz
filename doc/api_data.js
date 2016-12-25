@@ -210,7 +210,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/signin",
+    "url": "/api/signin",
     "title": "Sign in",
     "description": "<p>Log in</p>",
     "name": "Login",
@@ -252,7 +252,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/signup",
+    "url": "/api/signup",
     "title": "Sign up",
     "description": "<p>Create an account</p>",
     "name": "Signup",
@@ -291,6 +291,18 @@ define({ "api": [
         "name": "Authentified"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "user",
+            "description": "<p>to modify</p>"
+          }
+        ]
+      }
+    },
     "version": "0.0.0",
     "filename": "src/router/routes/users.js",
     "groupTitle": "User"
@@ -299,7 +311,7 @@ define({ "api": [
     "type": "patch",
     "url": "/users/friends",
     "title": "update friend list",
-    "description": "<p>Add or remove a friend</p>",
+    "description": "<p>Add or remove a friend to the current user</p>",
     "name": "UserPatch_update_friend",
     "group": "User",
     "permission": [

@@ -8,6 +8,12 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
+var _gitRev = require('git-rev');
+
+var _gitRev2 = _interopRequireDefault(_gitRev);
+
+var _root = require('../services/root');
+
 var _api = require('./routes/api');
 
 var _api2 = _interopRequireDefault(_api);
@@ -20,13 +26,10 @@ var _info = require('./routes/info');
 
 var _info2 = _interopRequireDefault(_info);
 
-var _user = require('../models/user');
-
-var _user2 = _interopRequireDefault(_user);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = _express2.default.Router();
+
 
 /**
  * @api {get} / Flagz Root
@@ -35,9 +38,13 @@ var app = _express2.default.Router();
  * @apiGroup API
  */
 app.get('/', function (req, res) {
-    res.json({
-        message: 'Welcome guys, doc currently building !',
-        doc: 'http://flagz-chtatarz.rhcloud.com/doc'
+    var protocol = req.protocol;
+
+    var host = req.get('host');
+    (0, _root.websiteRoot)({ protocol: protocol, host: host }).then(function (toSend) {
+        res.json(toSend);
+    }).catch(function (e) {
+        res.json(e);
     });
 });
 
@@ -53,7 +60,6 @@ app.get('/health', function (req, res) {
 });
 
 app.use('/info', _info2.default);
-app.use('/', _auth2.default);
 app.use('/api', _api2.default);
 
 // catch 404 and forward to error handler
