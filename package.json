@@ -10,7 +10,7 @@
     "deploy-patch": "npm version patch",
     "deploy-minor": "npm version minor",
     "deploy-major": "npm version major",
-    "preversion": "npm run clean && npm run dist && npm run doc && npm run git-dist",
+    "preversion": "npm test && npm run clean && npm run dist && npm run doc && npm run git-dist",
     "dist": "babel src -d dist",
     "doc": "apidoc -i src/ -o doc/",
     "git-dist": "git add --all && git commit -m \"[UP] : deploy dist\"",
