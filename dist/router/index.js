@@ -8,10 +8,6 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
-var _gitRev = require('git-rev');
-
-var _gitRev2 = _interopRequireDefault(_gitRev);
-
 var _root = require('../services/root');
 
 var _api = require('./routes/api');
@@ -41,11 +37,7 @@ app.get('/', function (req, res) {
     var protocol = req.protocol;
 
     var host = req.get('host');
-    (0, _root.websiteRoot)({ protocol: protocol, host: host }).then(function (toSend) {
-        res.json(toSend);
-    }).catch(function (e) {
-        res.json(e);
-    });
+    res.json((0, _root.websiteRoot)({ protocol: protocol, host: host }));
 });
 
 /**
