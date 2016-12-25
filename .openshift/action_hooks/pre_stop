@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo pre stop hook !
+
+$OPENSHIFT_REPO_DIR/node_modules/.bin/pm2 stop all
