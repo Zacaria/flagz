@@ -2,7 +2,8 @@
 import express from 'express';
 const router = express.Router();
 import User from '../../models/user';
-import {INSERT, DELETE, PARAMS_ERROR} from '../../constants';
+import * as userService from '../../services/user';
+import {INSERT, DELETE} from '../../constants';
 
 /**
  * @api {get} /users show users
@@ -12,10 +13,15 @@ import {INSERT, DELETE, PARAMS_ERROR} from '../../constants';
  * @apiPermission Authentified
  */
 router.get('/', (req, res) => {
-    User.find({}, (err, users) => {
-        if (err) throw err;
-        res.json(users);
-    });
+    userService.find()
+        .then(({users}) => res.json({
+            success: true,
+            users
+        }))
+        .catch(({message}) => res.json({
+            success: false,
+            message
+        }));
 });
 
 /**
@@ -24,24 +30,27 @@ router.get('/', (req, res) => {
  * @apiName User
  * @apiGroup User
  * @apiPermission Authentified
+ * @apiParam user to modify
  */
 router.get('/:id', (req, res) => {
-    User.findOne({
-            _id: {$eq: req.params.id}
+    userService.findOne({id: req.params.id})
+        .then(({user}) => {
+            res.json({
+                success: true,
+                user
+            });
         })
-        .then((user) => {
-            res.json(user.getUser());
-        }, (err) => {
+        .catch(({message}) => {
             res.json({
                 success: false,
-                err    : err.errmsg
+                message
             })
         });
 });
 
 /**
  * @api {patch} /users/friends update friend list
- * @apiDescription Add or remove a friend
+ * @apiDescription Add or remove a friend to the current user
  * @apiName UserPatch update friend
  * @apiGroup User
  * @apiPermission Authentified
@@ -54,29 +63,27 @@ router.get('/:id', (req, res) => {
  *   }
  */
 router.patch('/friends', (req, res) => {
-    User.findOne({
-            _id: req.user
+    const {op: operation, id: friendId} = req.body;
+    if (operation !== INSERT && operation !== DELETE) {
+        return res.json({
+            success: false,
+            message: 'Unrecognized operation [insert | delete]'
+        });
+    }
+
+    userService.findOne({id: friendId})
+        .then(friend => userService.findOne({id: req.user}, false))
+        .then(({user}) => userService.patchFriends({user, operation, friendId}))
+        .then(({user}) => {
+            res.json({
+                success: true,
+                user
+            });
         })
-        .then((user) => {
-            const {op: operation, id: friend} = req.body;
-            const indexOfFriend = user.friends.indexOf(friend);
-            if (operation === INSERT) {
-                if (indexOfFriend == -1)
-                    user.friends = [...user.friends, friend];
-            } else if (operation === DELETE) {
-                user.friends.splice(indexOfFriend, 1);
-            }
-            user.save()
-                .then((user) => {
-                    res.json({
-                        success: true,
-                        user
-                    });
-                });
-        }, (err) => {
+        .catch((err) => {
             res.json({
                 success: false,
-                err    : err.errmsg
+                message: err
             })
         });
 });
