@@ -5,6 +5,7 @@ import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import helmet from 'helmet';
 
 import router from './router';
 import mongoInit from './bin/dbInit';
@@ -12,6 +13,8 @@ import mongoInit from './bin/dbInit';
 const app = express();
 
 mongoInit();
+
+app.use(helmet());
 
 app.use(bodyParser.urlencoded({extended: false}));
 
