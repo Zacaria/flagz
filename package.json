@@ -31,6 +31,7 @@
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.3",
     "express": "^4.14.0",
+    "git-rev": "^0.2.1",
     "helmet": "^3.2.0",
     "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.7.1",

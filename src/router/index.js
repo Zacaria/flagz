@@ -1,11 +1,12 @@
 'use strict';
 
 import express from 'express';
+import gitRev from 'git-rev';
+const app = express.Router();
+import {websiteRoot} from '../services/root';
 import apiRoutes from './routes/api';
 import authRoutes from './routes/auth';
 import infoRoutes from './routes/info';
-import User from '../models/user';
-const app = express.Router();
 
 /**
  * @api {get} / Flagz Root
@@ -14,13 +15,14 @@ const app = express.Router();
  * @apiGroup API
  */
 app.get('/', (req, res) => {
-    res.json({
-        message : 'Welcome guys, doc currently building !',
-        doc     : 'http://flagz-chtatarz.rhcloud.com/doc',
-        signup   : req.protocol + '://' + req.get('host') + '/api/signup',
-        signin   : req.protocol + '://' + req.get('host') + '/api/signin',
-        users   : req.protocol + '://' + req.get('host') + '/api/users',
-        messages: req.protocol + '://' + req.get('host') + '/api/messages',
+    const {protocol} = req;
+    const host = req.get('host');
+    websiteRoot({protocol, host})
+    .then(toSend => {
+        res.json(toSend);
+    })
+    .catch(e => {
+        res.json(e);
     });
 });
 
