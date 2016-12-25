@@ -15,8 +15,12 @@ const app = express.Router();
  */
 app.get('/', (req, res) => {
     res.json({
-        message: 'Welcome guys, doc currently building !',
-        doc    : 'http://flagz-chtatarz.rhcloud.com/doc'
+        message : 'Welcome guys, doc currently building !',
+        doc     : 'http://flagz-chtatarz.rhcloud.com/doc',
+        signup   : req.protocol + '://' + req.get('host') + '/signup',
+        signin   : req.protocol + '://' + req.get('host') + '/signin',
+        users   : req.protocol + '://' + req.get('host') + '/api/users',
+        messages: req.protocol + '://' + req.get('host') + '/api/messages',
     });
 });
 
