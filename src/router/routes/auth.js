@@ -18,30 +18,16 @@ const router = express.Router();
  */
 router.post('/signup', (req, res) => {
     const {name, password} = req.body;
-    if(!name || !password) {
-        res.json({
+    userService.createUser({name, password})
+        .then(({id}) => res.json({
+            success: true,
+            id
+        }))
+        .catch(({message}) => res.json({
             success: false,
-            message: PARAMS_ERROR
-        });
-        return;
-    }
+            message
+        }));
 
-    const user = new User({
-        name,
-        password
-    });
-
-    user.save((err, user) => {
-        if (err) {
-            res.json({
-                success: false,
-                message: err.errmsg
-            });
-            return;
-        }
-
-        res.json({success: true, id: user._id});
-    });
 });
 
 /**
@@ -58,29 +44,29 @@ router.post('/signup', (req, res) => {
 router.post('/signin', (req, res) => {
     const {name, password} = req.body;
     userService.authenticate({name, password})
-    .then(({token, message}) => res.json({
-        success: true,
-        message,
-        token
-    }))
-    .catch(({message}) => res.json({
-        success: false,
-        message
-    }));
+        .then(({token, message}) => res.json({
+            success: true,
+            message,
+            token
+        }))
+        .catch(({message}) => res.json({
+            success: false,
+            message
+        }));
 });
 
 router.use((req, res, next) => {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     userService.validateToken({token})
-    .then((decoded) => {
-        req.user = decoded._doc;
-        next();
-    })
-    .catch(({message}) => res.status(403).json({
-        success: false,
-        message
-    }));
+        .then((decoded) => {
+            req.user = decoded._doc;
+            next();
+        })
+        .catch(({message}) => res.status(403).json({
+            success: false,
+            message
+        }));
 });
 
 export default router;

@@ -2,6 +2,31 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import {PARAMS_ERROR, SECRET} from '../constants';
 
+export const createUser = ({name, password}) =>
+    new Promise((resolve, reject) => {
+        if (!name || !password) {
+            return reject({
+                message: PARAMS_ERROR
+            });
+        }
+
+        const user = new User({
+            name,
+            password
+        });
+
+        user.save((err, user) => {
+            if (err) {
+                return reject({
+                    message: err.errmsg
+                });
+            }
+
+            resolve({id: user._id});
+        });
+    });
+
+
 export const authenticate = ({name, password}) =>
     new Promise((resolve, reject) => {
         if (!name || !password) {

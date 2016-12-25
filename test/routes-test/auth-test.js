@@ -47,6 +47,7 @@ describe('Auth', () => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(true);
+                    res.body.should.have.property('id');
                     done();
                 });
         });
