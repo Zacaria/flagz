@@ -4,7 +4,7 @@
   "description": "flagz POC",
   "main": "./bin/www.js",
   "scripts": {
-    "start": "HOME=$OPENSHIFT_REPO_DIR node_modules/.bin/pm2 start dist/bin/www.js -i max",
+    "start": "node dist/bin/cluster.js",
     "serve": "nodemon src/bin/www.js --exec babel-node",
     "clean": "rm -rf dist/ && mkdir dist",
     "deploy-patch": "npm version patch",
@@ -33,8 +33,7 @@
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.7.1",
-    "morgan": "^1.7.0",
-    "pm2": "^2.2.2"
+    "morgan": "^1.7.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
