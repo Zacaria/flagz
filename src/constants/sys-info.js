@@ -1,15 +1,11 @@
 'use strict';
 
 const os = require('os');
-const exec = require('child_process').execSync;
 const env = process.env;
 
 export const gen = () => ([{
         name: 'Node.js Version',
         value: process.version.replace('v', '')
-    } , {
-        name:  'NPM Version',
-        value: exec('npm --version').toString().replace(os.EOL, '')
     }, {
         name:  'OS Type',
         value: os.type()
