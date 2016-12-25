@@ -69,6 +69,24 @@ describe('Api', () => {
                     done();
                 });
         });
+    });
 
+    it('should able to GET the root api with valid token through headers', (done) => {
+        userService.authenticate({
+                name: 'admin',
+                password: 'admin'
+            })
+            .then(({token}) => {
+                chai.request(server)
+                    .get('/api')
+                    .set('x-access-token', token)
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('success').eql(true);
+                        res.body.should.have.property('message');
+                        done();
+                    });
+            });
     });
 });
