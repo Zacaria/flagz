@@ -1,7 +1,6 @@
 'use strict';
 
 import express from 'express';
-import gitRev from 'git-rev';
 const app = express.Router();
 import {websiteRoot} from '../services/root';
 import apiRoutes from './routes/api';
@@ -17,13 +16,7 @@ import infoRoutes from './routes/info';
 app.get('/', (req, res) => {
     const {protocol} = req;
     const host = req.get('host');
-    websiteRoot({protocol, host})
-    .then(toSend => {
-        res.json(toSend);
-    })
-    .catch(e => {
-        res.json(e);
-    });
+    res.json(websiteRoot({protocol, host}));
 });
 
 /**
