@@ -4,7 +4,7 @@
   "description": "flagz POC",
   "main": "./bin/www.js",
   "scripts": {
-    "start": "HOME=$OPENSHIFT_REPO_DIR; node_modules/.bin/pm2 start dist/bin/www.js -i max",
+    "start": "export HOME=$OPENSHIFT_REPO_DIR && node_modules/.bin/pm2 start dist/bin/www.js -i max",
     "serve": "nodemon src/bin/www.js --exec babel-node",
     "clean": "rm -rf dist/ && mkdir dist",
     "deploy-patch": "npm version patch",
