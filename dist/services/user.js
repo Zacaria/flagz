@@ -50,12 +50,6 @@ var authenticate = exports.authenticate = function authenticate(_ref2) {
     var name = _ref2.name,
         password = _ref2.password;
     return new Promise(function (resolve, reject) {
-        if (!name || !password) {
-            return reject({
-                message: _constants.PARAMS_ERROR
-            });
-        }
-
         _user2.default.findOne({ name: name }).then(function (user) {
             if (!user) return reject({
                 message: 'user not found'
@@ -88,11 +82,6 @@ var authenticate = exports.authenticate = function authenticate(_ref2) {
 var validateToken = exports.validateToken = function validateToken(_ref3) {
     var token = _ref3.token;
     return new Promise(function (resolve, reject) {
-
-        if (!token) return reject({
-            message: 'No token'
-        });
-
         _jsonwebtoken2.default.verify(token, _constants.SECRET, function (err, decoded) {
             if (err) return reject({
                 message: 'wrong token, authentify at /signin'

@@ -73,6 +73,12 @@ router.post('/signin', function (req, res) {
         name = _req$body2.name,
         password = _req$body2.password;
 
+    if (!name || !password) {
+        return res.json({
+            success: false,
+            message: _constants.PARAMS_ERROR
+        });
+    }
     userService.authenticate({ name: name, password: password }).then(function (_ref3) {
         var token = _ref3.token,
             message = _ref3.message;
@@ -92,6 +98,11 @@ router.post('/signin', function (req, res) {
 
 router.use(function (req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    if (!token) return res.status(403).json({
+        success: false,
+        message: 'No token'
+    });
 
     userService.validateToken({ token: token }).then(function (decoded) {
         req.user = decoded._doc;

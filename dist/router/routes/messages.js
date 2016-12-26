@@ -30,7 +30,8 @@ var router = _express2.default.Router();
  * @apiGroup Message
  * @apiPermission Authentified
  */
-router.get('/messages', function (req, res) {
+//TODO : paginate !
+router.get('/', function (req, res) {
     _message2.default.find({}).then(function (messages) {
         res.json(messages);
     }, function (err) {
@@ -48,7 +49,7 @@ router.get('/messages', function (req, res) {
  * @apiGroup Message
  * @apiPermission Authentified
  */
-router.get('/messages/me', function (req, res) {
+router.get('/me', function (req, res) {
     console.log('hey');
     _message2.default.find({
         author: {
@@ -74,7 +75,7 @@ router.get('/messages/me', function (req, res) {
  * @apiParam {String} center position of the center the circular range. ex : @48.7861405,2.3274749
  * @apiParam {Number} [r=200] range of the circular range in meters
  */
-router.get('/messages/@:center&r=:r', function (req, res) {
+router.get('/@:center&r=:r', function (req, res) {
     var center = req.params.center.split(',').map(Number);
     var range = req.params.r || 200;
     console.log('hey');
@@ -133,7 +134,7 @@ router.get('/messages/@:center&r=:r', function (req, res) {
  *      }
  * @apiParam {String} [restricted=false] true|false if true, the message is visible only by the author's friends
  */
-router.post('/messages', function (req, res) {
+router.post('/', function (req, res) {
     var _req$body = req.body,
         text = _req$body.text,
         orientation = _req$body.orientation,

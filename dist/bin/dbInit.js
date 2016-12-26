@@ -14,8 +14,6 @@ var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//const config = require('./db');
-
 var init = function init() {
 
     // default to a 'localhost' configuration:
