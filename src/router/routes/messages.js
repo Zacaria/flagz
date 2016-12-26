@@ -12,7 +12,8 @@ import {EARTH_KM, PARAMS_ERROR} from '../../constants';
  * @apiGroup Message
  * @apiPermission Authentified
  */
-router.get('/messages', (req, res) => {
+//TODO : paginate !
+router.get('/', (req, res) => {
     Message.find({})
         .then((messages) => {
             res.json(messages);
@@ -31,7 +32,7 @@ router.get('/messages', (req, res) => {
  * @apiGroup Message
  * @apiPermission Authentified
  */
-router.get('/messages/me', (req, res) => {
+router.get('/me', (req, res) => {
     console.log('hey');
     Message.find({
             author: {
@@ -58,7 +59,7 @@ router.get('/messages/me', (req, res) => {
  * @apiParam {String} center position of the center the circular range. ex : @48.7861405,2.3274749
  * @apiParam {Number} [r=200] range of the circular range in meters
  */
-router.get('/messages/@:center&r=:r', (req, res) => {
+router.get('/@:center&r=:r', (req, res) => {
     const center = req.params.center.split(',').map(Number);
     const range  = req.params.r || 200;
     console.log('hey');
@@ -121,7 +122,7 @@ router.get('/messages/@:center&r=:r', (req, res) => {
  *      }
  * @apiParam {String} [restricted=false] true|false if true, the message is visible only by the author's friends
  */
-router.post('/messages', (req, res) => {
+router.post('/', (req, res) => {
     const {text, orientation, restricted, location} = req.body;
 
     if (!location || !text) {
