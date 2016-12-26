@@ -15,7 +15,7 @@ var websiteRoot = exports.websiteRoot = function websiteRoot(_ref) {
     var protocol = _ref.protocol,
         host = _ref.host;
     return {
-        message: 'Welcome guys, doc currently building !',
+        message: 'Welcome guys',
         version: _package2.default.version,
         doc: protocol + '://' + host + '/doc',
         db: protocol + '://' + host + '/rockmongo',
