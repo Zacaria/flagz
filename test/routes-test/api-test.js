@@ -14,13 +14,23 @@ chai.use(chaiHttp);
 
 describe('Api', () => {
     const user = new User({
-        name: 'admin',
+        name    : 'admin',
         password: 'admin'
     });
+
+    //filled in before hook
+    let tokenAuth;
 
     before((done) => { //Before each test we empty the database
         User.remove({})
             .then(() => user.save())
+            .then(() => userService.authenticate({
+                name    : 'admin',
+                password: 'admin'
+            }))
+            .then(({token}) => {
+                tokenAuth = token;
+            })
             .then(() => done());
     });
 
@@ -55,31 +65,12 @@ describe('Api', () => {
 
     it('should GET the root api with valid token', (done) => {
         userService.authenticate({
-                name: 'admin',
-                password: 'admin'
-            })
-        .then(({token}) => {
-            chai.request(server)
-                .get('/api?token=' + token)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('success').eql(true);
-                    res.body.should.have.property('message');
-                    done();
-                });
-        });
-    });
-
-    it('should GET the root api with valid token through headers', (done) => {
-        userService.authenticate({
-                name: 'admin',
+                name    : 'admin',
                 password: 'admin'
             })
             .then(({token}) => {
                 chai.request(server)
-                    .get('/api')
-                    .set('x-access-token', token)
+                    .get('/api?token=' + token)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -87,6 +78,19 @@ describe('Api', () => {
                         res.body.should.have.property('message');
                         done();
                     });
+            });
+    });
+
+    it('should GET the root api with valid token through headers', (done) => {
+        chai.request(server)
+            .get('/api')
+            .set('x-access-token', tokenAuth)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('success').eql(true);
+                res.body.should.have.property('message');
+                done();
             });
     });
 });
