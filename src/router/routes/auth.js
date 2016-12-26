@@ -64,7 +64,7 @@ router.post('/signin', (req, res) => {
 router.use((req, res, next) => {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-    if (!token) res.status(403).json({
+    if (!token) return res.status(403).json({
         success: false,
         message: 'No token'
     });
