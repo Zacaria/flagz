@@ -4,8 +4,8 @@
   "description": "flagz POC",
   "main": "./bin/www.js",
   "scripts": {
-    "start": "forever start --uid flagz -a -w -t --killSignal=SIGTERM dist/bin/cluster.js --exitcrash ",
-    "stop": "forever stop flagz",
+    "start": "HOME=$OPENSHIFT_REPO_DIR && forever start --uid flagz -a -w -t --killSignal=SIGTERM dist/bin/cluster.js --exitcrash ",
+    "stop": "HOME=$OPENSHIFT_REPO_DIR && forever stop flagz",
     "serve": "nodemon src/bin/www.js --exec babel-node",
     "clean": "rm -rf dist/ && mkdir dist",
     "deploy-patch": "npm version patch",
