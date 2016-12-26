@@ -29,12 +29,6 @@ export const createUser = ({name, password}) =>
 
 export const authenticate = ({name, password}) =>
     new Promise((resolve, reject) => {
-        if (!name || !password) {
-            return reject({
-                message: PARAMS_ERROR
-            });
-        }
-
         User.findOne({name})
             .then(user => {
                 if (!user) return reject({
@@ -67,11 +61,6 @@ export const authenticate = ({name, password}) =>
 
 export const validateToken = ({token}) =>
     new Promise((resolve, reject) => {
-
-        if (!token) return reject({
-            message: 'No token'
-        });
-
         jwt.verify(token, SECRET, (err, decoded) => {
             if (err) return reject({
                 message: 'wrong token, authentify at /signin'

@@ -43,6 +43,12 @@ router.post('/signup', (req, res) => {
  */
 router.post('/signin', (req, res) => {
     const {name, password} = req.body;
+    if (!name || !password) {
+        return res.json({
+            success: false,
+            message: PARAMS_ERROR
+        });
+    }
     userService.authenticate({name, password})
         .then(({token, message}) => res.json({
             success: true,
@@ -57,6 +63,11 @@ router.post('/signin', (req, res) => {
 
 router.use((req, res, next) => {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    if (!token) res.status(403).json({
+        success: false,
+        message: 'No token'
+    });
 
     userService.validateToken({token})
         .then((decoded) => {
