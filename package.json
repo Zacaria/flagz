@@ -4,7 +4,8 @@
   "description": "flagz POC",
   "main": "./bin/www.js",
   "scripts": {
-    "start": "node dist/bin/cluster.js",
+    "start": "forever start --uid flagz -a --killSignal=SIGTERM dist/bin/cluster.js --exitcrash ",
+    "stop": "forever stop flagz",
     "serve": "nodemon src/bin/www.js --exec babel-node",
     "clean": "rm -rf dist/ && mkdir dist",
     "deploy-patch": "npm version patch",
