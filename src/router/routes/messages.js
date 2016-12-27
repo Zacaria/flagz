@@ -6,7 +6,7 @@ import Message from '../../models/message';
 import {EARTH_KM, PARAMS_ERROR} from '../../constants';
 
 /**
- * @api {get} /messages Show all
+ * @api {get} /api/messages Show all
  * @apiDescription Shows all messages
  * @apiName Message
  * @apiGroup Message
@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
 });
 
 /**
- * @api {get} /messages/me Show my messages
+ * @api {get} /api/messages/me Show my messages
  * @apiDescription Shows all messages of connected user
  * @apiName Message user
  * @apiGroup Message
@@ -50,7 +50,7 @@ router.get('/me', (req, res) => {
 });
 
 /**
- * @api {get} /messages/@:center&r=:r Aggregate within sphere
+ * @api {get} /api/messages/@:center&r=:r Aggregate within sphere
  * @apiDescription Shows all messages within a circular range
  * @apiName Message search
  * @apiGroup Message
@@ -105,7 +105,7 @@ router.get('/@:center&r=:r', (req, res) => {
 });
 
 /**
- * @api {post} /messages Create
+ * @api {post} /api/messages Create
  * @apiDescription create a message
  * @apiName Message creation
  * @apiGroup Message

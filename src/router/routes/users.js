@@ -6,7 +6,7 @@ import * as userService from '../../services/user';
 import {INSERT, DELETE} from '../../constants';
 
 /**
- * @api {get} /users show users
+ * @api {get} /api/users show users
  * @apiDescription Shows all users
  * @apiName Users
  * @apiGroup User
@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
 });
 
 /**
- * @api {get} /users/:id show user
+ * @api {get} /api/users/:id show user
  * @apiDescription Shows one user
  * @apiName User
  * @apiGroup User
@@ -49,7 +49,7 @@ router.get('/:id', (req, res) => {
 });
 
 /**
- * @api {patch} /users/friends update friend list
+ * @api {patch} /api/users/friends update friend list
  * @apiDescription Add or remove a friend to the current user
  * @apiName UserPatch update friend
  * @apiGroup User
