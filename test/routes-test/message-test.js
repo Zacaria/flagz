@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test';
 import User from '~/src/models/user';
 import Message from '~/src/models/message';
 import * as userService from '~/src/services/user';
+import * as routePaths from '~/src/constants/routes';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -42,7 +43,7 @@ describe('Message', () => {
     describe('/GET messages', () => {
         it('should not GET messages without api token', (done) => {
             chai.request(server)
-                .get('/api/messages')
+                .get(routePaths.ROUTE_MESSAGES)
                 .end((err, res) => {
                     res.should.have.status(403);
                     res.body.should.be.a('object');
@@ -54,7 +55,7 @@ describe('Message', () => {
 
         it('should not GET messages with bad token', (done) => {
             chai.request(server)
-                .get('/api?token=0')
+                .get(routePaths.ROUTE_MESSAGES + '?token=0')
                 .end((err, res) => {
                     res.should.have.status(403);
                     res.body.should.be.a('object');

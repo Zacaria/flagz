@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 import User from '~/src/models/user';
+import * as routePaths from '~/src/constants/routes';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -59,7 +60,7 @@ describe('User', () => {
     describe('/GET /api/users', () => {
         it('should get users list', (done) => {
             chai.request(server)
-                .get('/api/users')
+                .get(routePaths.ROUTE_USERS)
                 .set('x-access-token', authToken)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -76,7 +77,7 @@ describe('User', () => {
     describe('/GET /api/users/:id', () => {
         it('should get one user using correct id', (done) => {
             chai.request(server)
-                .get('/api/users/' + dbUsers[0]._id)
+                .get(routePaths.ROUTE_USERS + '/' + dbUsers[0]._id)
                 .set('x-access-token', authToken)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -92,7 +93,7 @@ describe('User', () => {
 
         it('should get no user using invalid id', (done) => {
             chai.request(server)
-                .get('/api/users/' + 'invalid')
+                .get(routePaths.ROUTE_USERS + '/invalid')
                 .set('x-access-token', authToken)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -105,7 +106,7 @@ describe('User', () => {
 
         it('should get no user using incorrect id', (done) => {
             chai.request(server)
-                .get('/api/users/' + fakeId)
+                .get(routePaths.ROUTE_USERS + '/' + fakeId)
                 .set('x-access-token', authToken)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -120,7 +121,7 @@ describe('User', () => {
     describe('/PATCH /friends', () => {
         it('should add a friend', (done) => {
             chai.request(server)
-                .patch('/api/users/friends')
+                .patch(routePaths.ROUTE_USERS_FRIENDS)
                 .set('x-access-token', authToken)
                 .send({
                     op: 'insert',
@@ -142,7 +143,7 @@ describe('User', () => {
 
         it('should not add friend twice', (done) => {
             chai.request(server)
-                .patch('/api/users/friends')
+                .patch(routePaths.ROUTE_USERS_FRIENDS)
                 .set('x-access-token', authToken)
                 .send({
                     op: 'insert',
@@ -163,7 +164,7 @@ describe('User', () => {
 
         it('should delete a friend', (done) => {
             chai.request(server)
-                .patch('/api/users/friends')
+                .patch(routePaths.ROUTE_USERS_FRIENDS)
                 .set('x-access-token', authToken)
                 .send({
                     op: 'delete',
@@ -184,7 +185,7 @@ describe('User', () => {
 
         it('should fail on unrecognized op', (done) => {
             chai.request(server)
-                .patch('/api/users/friends')
+                .patch(routePaths.ROUTE_USERS_FRIENDS)
                 .set('x-access-token', authToken)
                 .send({
                     op: 'something',
@@ -200,7 +201,7 @@ describe('User', () => {
 
         it('should fail on unknown user', (done) => {
             chai.request(server)
-                .patch('/api/users/friends')
+                .patch(routePaths.ROUTE_USERS_FRIENDS)
                 .set('x-access-token', authToken)
                 .send({
                     op: 'insert',

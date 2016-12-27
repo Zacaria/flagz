@@ -1,6 +1,8 @@
 process.env.NODE_ENV = 'test';
 
 import User from '~/src/models/user';
+import * as routePaths from '~/src/constants/routes';
+
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -26,7 +28,7 @@ describe('Auth', () => {
     describe('/POST signup', () => {
         it('it should not create a user with unsufficient params', (done) => {
             chai.request(server)
-                .post('/api/signup')
+                .post(routePaths.ROUTE_AUTH_SINGUP)
                 .send({
                     name: 'admin'
                 })
@@ -41,7 +43,7 @@ describe('Auth', () => {
 
         it('it should create a user', (done) => {
             chai.request(server)
-                .post('/api/signup')
+                .post(routePaths.ROUTE_AUTH_SINGUP)
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -54,7 +56,7 @@ describe('Auth', () => {
 
         it('it should not create a user existing name', (done) => {
             chai.request(server)
-                .post('/api/signup')
+                .post(routePaths.ROUTE_AUTH_SINGUP)
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -70,7 +72,7 @@ describe('Auth', () => {
 
         it('it should not authenticate with user not existing', (done) => {
             chai.request(server)
-                .post('/api/signin')
+                .post(routePaths.ROUTE_AUTH_SIGNIN)
                 .send({
                     name: 'noone',
                     password: 'wrong'
@@ -86,7 +88,7 @@ describe('Auth', () => {
 
         it('it should not authenticate with wrong pw', (done) => {
             chai.request(server)
-                .post('/api/signin')
+                .post(routePaths.ROUTE_AUTH_SIGNIN)
                 .send({
                     name: 'admin',
                     password: 'wrong'
@@ -102,7 +104,7 @@ describe('Auth', () => {
 
         it('it should return a token', (done) => {
             chai.request(server)
-                .post('/api/signin')
+                .post(routePaths.ROUTE_AUTH_SIGNIN)
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(200);

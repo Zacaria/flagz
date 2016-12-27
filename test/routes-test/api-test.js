@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test';
 import User from '~/src/models/user';
 import Message from '~/src/models/message';
 import * as userService from '~/src/services/user';
+import * as routePaths from '~/src/constants/routes';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -41,7 +42,7 @@ describe('Api', () => {
 
     it('should not GET the root api without token', (done) => {
         chai.request(server)
-            .get('/api')
+            .get(routePaths.ROUTE_API)
             .end((err, res) => {
                 res.should.have.status(403);
                 res.body.should.be.a('object');
@@ -53,7 +54,7 @@ describe('Api', () => {
 
     it('should not GET the root api with bad token', (done) => {
         chai.request(server)
-            .get('/api?token=0')
+            .get(routePaths.ROUTE_API + '?token=0')
             .end((err, res) => {
                 res.should.have.status(403);
                 res.body.should.be.a('object');
@@ -70,7 +71,7 @@ describe('Api', () => {
             })
             .then(({token}) => {
                 chai.request(server)
-                    .get('/api?token=' + token)
+                    .get(routePaths.ROUTE_API + '?token=' + token)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -83,7 +84,7 @@ describe('Api', () => {
 
     it('should GET the root api with valid token through headers', (done) => {
         chai.request(server)
-            .get('/api')
+            .get(routePaths.ROUTE_API)
             .set('x-access-token', tokenAuth)
             .end((err, res) => {
                 res.should.have.status(200);
