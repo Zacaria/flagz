@@ -6,6 +6,7 @@ export const ROUTE_INFO = '/info';
 export const ROUTE_INFO_POLL = '/info/poll';
 export const ROUTE_INFO_GEN = '/info/gen';
 
+export const ROUTE_API = '/api';
 export const ROUTE_AUTH_SIGNIN = '/api/signin';
 export const ROUTE_AUTH_SINGUP = '/api/signup';
 
