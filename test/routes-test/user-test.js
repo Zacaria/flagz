@@ -1,12 +1,12 @@
 process.env.NODE_ENV = 'test';
 
-import User from '../../src/models/user';
+import User from '~/src/models/user';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
-import server from '../../src/app';
+import server from '~/src/app';
 
-import * as userService from '../../src/services/user';
+import * as userService from '~/src/services/user';
 
 const should = chai.should();
 
