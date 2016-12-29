@@ -34,7 +34,6 @@ router.get('/', (req, res) => {
  * @apiPermission Authentified
  */
 router.get('/me', (req, res) => {
-    console.log('hey');
     Message.find({
             author: {
                 $eq: req.params.id
@@ -63,7 +62,6 @@ router.get('/me', (req, res) => {
 router.get('/@:center&r=:r', (req, res) => {
     const center = req.params.center.split(',').map(Number);
     const range  = req.params.r || 200;
-    console.log('hey');
     if (!center) {
         res.json({
             success: false,
@@ -144,13 +142,11 @@ router.post('/', (req, res) => {
     message
         .save()
         .then((message) => {
-            console.log(message);
             res.json({
                 success: true,
                 created: message
             });
         }, (err) => {
-            console.log(err);
             res.json({
                 success: false,
                 message: err.errmsg

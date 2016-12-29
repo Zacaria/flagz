@@ -1,7 +1,6 @@
 process.env.NODE_ENV = 'test';
 
 import User from '~/src/models/user';
-import Message from '~/src/models/message';
 import * as userService from '~/src/services/user';
 import * as routePaths from '~/src/constants/routes';
 

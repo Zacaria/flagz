@@ -48,7 +48,7 @@ describe('User', () => {
             }))
             .then(() => done())
             .catch(e => {
-                console.log('erro', e);
+                console.log('error', e);
                 done();
             });
     });
@@ -128,7 +128,6 @@ describe('User', () => {
                     id: dbUsers[1]._id
                 })
                 .end((err, res) => {
-                    console.log(res.body);
                     res.should.have.status(200);
                     res.body.should.have.property('success').eql(true);
                     res.body.should.have.property('user');
