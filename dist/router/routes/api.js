@@ -35,7 +35,7 @@ router.use('/', _auth2.default);
 router.get('/', function (req, res) {
     res.json({
         success: true,
-        message: 'api root'
+        info: 'api root'
     });
 });
 

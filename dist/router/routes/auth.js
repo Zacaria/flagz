@@ -49,10 +49,10 @@ router.post('/signup', function (req, res) {
             id: id
         });
     }).catch(function (_ref2) {
-        var message = _ref2.message;
+        var info = _ref2.info;
         return res.json({
             success: false,
-            message: message
+            info: info
         });
     });
 });
@@ -76,22 +76,22 @@ router.post('/signin', function (req, res) {
     if (!name || !password) {
         return res.json({
             success: false,
-            message: _constants.PARAMS_ERROR
+            info: _constants.PARAMS_ERROR
         });
     }
     userService.authenticate({ name: name, password: password }).then(function (_ref3) {
         var token = _ref3.token,
-            message = _ref3.message;
+            info = _ref3.info;
         return res.json({
             success: true,
-            message: message,
+            info: info,
             token: token
         });
     }).catch(function (_ref4) {
-        var message = _ref4.message;
+        var info = _ref4.info;
         return res.json({
             success: false,
-            message: message
+            info: info
         });
     });
 });
@@ -101,17 +101,17 @@ router.use(function (req, res, next) {
 
     if (!token) return res.status(403).json({
         success: false,
-        message: 'No token'
+        info: 'No token'
     });
 
     userService.validateToken({ token: token }).then(function (decoded) {
         req.user = decoded._doc;
         next();
     }).catch(function (_ref5) {
-        var message = _ref5.message;
+        var info = _ref5.info;
         return res.status(403).json({
             success: false,
-            message: message
+            info: info
         });
     });
 });

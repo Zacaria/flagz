@@ -26,7 +26,7 @@ var router = _express2.default.Router();
 
 
 /**
- * @api {get} /users show users
+ * @api {get} /api/users show users
  * @apiDescription Shows all users
  * @apiName Users
  * @apiGroup User
@@ -40,16 +40,16 @@ router.get('/', function (req, res) {
             users: users
         });
     }).catch(function (_ref2) {
-        var message = _ref2.message;
+        var info = _ref2.info;
         return res.json({
             success: false,
-            message: message
+            info: info
         });
     });
 });
 
 /**
- * @api {get} /users/:id show user
+ * @api {get} /api/users/:id show user
  * @apiDescription Shows one user
  * @apiName User
  * @apiGroup User
@@ -65,17 +65,17 @@ router.get('/:id', function (req, res) {
             user: user
         });
     }).catch(function (_ref4) {
-        var message = _ref4.message;
+        var info = _ref4.info;
 
         res.json({
             success: false,
-            message: message
+            info: info
         });
     });
 });
 
 /**
- * @api {patch} /users/friends update friend list
+ * @api {patch} /api/users/friends update friend list
  * @apiDescription Add or remove a friend to the current user
  * @apiName UserPatch update friend
  * @apiGroup User
@@ -96,7 +96,7 @@ router.patch('/friends', function (req, res) {
     if (operation !== _constants.INSERT && operation !== _constants.DELETE) {
         return res.json({
             success: false,
-            message: 'Unrecognized operation [insert | delete]'
+            info: 'Unrecognized operation [insert | delete]'
         });
     }
 
@@ -115,7 +115,7 @@ router.patch('/friends', function (req, res) {
     }).catch(function (err) {
         res.json({
             success: false,
-            message: err
+            info: err
         });
     });
 });

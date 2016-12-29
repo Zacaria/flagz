@@ -25,7 +25,7 @@ var createUser = exports.createUser = function createUser(_ref) {
     return new Promise(function (resolve, reject) {
         if (!name || !password) {
             return reject({
-                message: _constants.PARAMS_ERROR
+                info: _constants.PARAMS_ERROR
             });
         }
 
@@ -37,7 +37,7 @@ var createUser = exports.createUser = function createUser(_ref) {
         user.save(function (err, user) {
             if (err) {
                 return reject({
-                    message: err.errmsg
+                    info: err.errmsg
                 });
             }
 
@@ -52,28 +52,28 @@ var authenticate = exports.authenticate = function authenticate(_ref2) {
     return new Promise(function (resolve, reject) {
         _user2.default.findOne({ name: name }).then(function (user) {
             if (!user) return reject({
-                message: 'user not found'
+                info: 'user not found'
             });
 
             user.comparePassword(password, function (err, isMatch) {
                 if (err) return reject({
-                    message: err
+                    info: err
                 });
                 if (!isMatch) return reject({
-                    message: 'wrong password'
+                    info: 'wrong password'
                 });
 
                 var token = _jsonwebtoken2.default.sign(user, _constants.SECRET, {
                     expiresIn: '10h'
                 });
                 return resolve({
-                    message: 'Enjoy your token',
+                    info: 'Enjoy your token',
                     token: token
                 });
             });
         }).catch(function (err) {
             reject({
-                message: err
+                info: err
             });
         });
     });
@@ -84,7 +84,7 @@ var validateToken = exports.validateToken = function validateToken(_ref3) {
     return new Promise(function (resolve, reject) {
         _jsonwebtoken2.default.verify(token, _constants.SECRET, function (err, decoded) {
             if (err) return reject({
-                message: 'wrong token, authentify at /signin'
+                info: 'wrong token, authentify at /signin'
             });
             resolve(decoded);
         });
@@ -96,7 +96,7 @@ var find = exports.find = function find() {
         _user2.default.find({}).then(function (users) {
             return resolve({ users: users });
         }).catch(function (err) {
-            reject({ message: err });
+            reject({ info: err });
         });
     });
 };
@@ -115,7 +115,7 @@ var findOne = exports.findOne = function findOne(_ref4) {
             if (!safe) resolve({ user: user });
             resolve({ user: user.getUser() });
         }).catch(function (err) {
-            return reject({ message: err });
+            return reject({ info: err });
         });
     });
 };

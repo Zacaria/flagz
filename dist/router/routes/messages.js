@@ -16,7 +16,13 @@ var _message = require('../../models/message');
 
 var _message2 = _interopRequireDefault(_message);
 
+var _message3 = require('../../services/message');
+
+var messageService = _interopRequireWildcard(_message3);
+
 var _constants = require('../../constants');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24,7 +30,7 @@ var router = _express2.default.Router();
 
 
 /**
- * @api {get} /messages Show all
+ * @api {get} /api/messages Show all
  * @apiDescription Shows all messages
  * @apiName Message
  * @apiGroup Message
@@ -32,25 +38,29 @@ var router = _express2.default.Router();
  */
 //TODO : paginate !
 router.get('/', function (req, res) {
-    _message2.default.find({}).then(function (messages) {
-        res.json(messages);
-    }, function (err) {
-        res.json({
+    messageService.find().then(function (_ref) {
+        var messages = _ref.messages;
+        return res.json({
+            success: true,
+            messages: messages
+        });
+    }).catch(function (_ref2) {
+        var info = _ref2.info;
+        return res.json({
             success: false,
-            err: err.errmsg
+            info: info
         });
     });
 });
 
 /**
- * @api {get} /messages/me Show my messages
+ * @api {get} /api/messages/me Show my messages
  * @apiDescription Shows all messages of connected user
  * @apiName Message user
  * @apiGroup Message
  * @apiPermission Authentified
  */
 router.get('/me', function (req, res) {
-    console.log('hey');
     _message2.default.find({
         author: {
             $eq: req.params.id
@@ -66,7 +76,7 @@ router.get('/me', function (req, res) {
 });
 
 /**
- * @api {get} /messages/@:center&r=:r Aggregate within sphere
+ * @api {get} /api/messages/@:center&r=:r Aggregate within sphere
  * @apiDescription Shows all messages within a circular range
  * @apiName Message search
  * @apiGroup Message
@@ -78,7 +88,6 @@ router.get('/me', function (req, res) {
 router.get('/@:center&r=:r', function (req, res) {
     var center = req.params.center.split(',').map(Number);
     var range = req.params.r || 200;
-    console.log('hey');
     if (!center) {
         res.json({
             success: false,
@@ -117,7 +126,7 @@ router.get('/@:center&r=:r', function (req, res) {
 });
 
 /**
- * @api {post} /messages Create
+ * @api {post} /api/messages Create
  * @apiDescription create a message
  * @apiName Message creation
  * @apiGroup Message
@@ -158,13 +167,11 @@ router.post('/', function (req, res) {
     });
 
     message.save().then(function (message) {
-        console.log(message);
         res.json({
             success: true,
             created: message
         });
     }, function (err) {
-        console.log(err);
         res.json({
             success: false,
             message: err.errmsg

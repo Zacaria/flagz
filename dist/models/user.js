@@ -44,7 +44,6 @@ UserSchema.pre('save', function (next) {
 
     _bcryptNodejs2.default.hash(user.password, null, null, function (err, hash) {
         if (err) {
-            console.log(err);
             return next(err);
         }
 

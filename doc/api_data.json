@@ -72,7 +72,7 @@
   },
   {
     "type": "get",
-    "url": "/messages",
+    "url": "/api/messages",
     "title": "Show all",
     "description": "<p>Shows all messages</p>",
     "name": "Message",
@@ -88,7 +88,7 @@
   },
   {
     "type": "post",
-    "url": "/messages",
+    "url": "/api/messages",
     "title": "Create",
     "description": "<p>create a message</p>",
     "name": "Message_creation",
@@ -146,7 +146,7 @@
   },
   {
     "type": "get",
-    "url": "/messages/@:center&r=:r",
+    "url": "/api/messages/@:center&r=:r",
     "title": "Aggregate within sphere",
     "description": "<p>Shows all messages within a circular range</p>",
     "name": "Message_search",
@@ -183,7 +183,7 @@
   },
   {
     "type": "get",
-    "url": "/messages/me",
+    "url": "/api/messages/me",
     "title": "Show my messages",
     "description": "<p>Shows all messages of connected user</p>",
     "name": "Message_user",
@@ -281,7 +281,7 @@
   },
   {
     "type": "get",
-    "url": "/users/:id",
+    "url": "/api/users/:id",
     "title": "show user",
     "description": "<p>Shows one user</p>",
     "name": "User",
@@ -309,7 +309,7 @@
   },
   {
     "type": "patch",
-    "url": "/users/friends",
+    "url": "/api/users/friends",
     "title": "update friend list",
     "description": "<p>Add or remove a friend to the current user</p>",
     "name": "UserPatch_update_friend",
@@ -344,7 +344,7 @@
   },
   {
     "type": "get",
-    "url": "/users",
+    "url": "/api/users",
     "title": "show users",
     "description": "<p>Shows all users</p>",
     "name": "Users",

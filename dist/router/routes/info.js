@@ -22,7 +22,7 @@ var router = _express2.default.Router();
  */
 router.get('/', function (req, res) {
     res.json({
-        message: 'infos root'
+        info: 'infos root'
     });
 });
 

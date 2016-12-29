@@ -57,9 +57,7 @@ var MessageSchema = new Schema({
 MessageSchema.pre('save', function (next) {
     var message = this;
     if (message.restricted) {
-        console.log('restricted');
         _user2.default.findOne({ _id: message.author }).then(function (user) {
-            console.log(user);
             message._doc.visibility = user.friends;
             next();
         }, function (err) {
