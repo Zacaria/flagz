@@ -47,7 +47,7 @@ describe('Api', () => {
                 res.should.have.status(403);
                 res.body.should.be.a('object');
                 res.body.should.have.property('success').eql(false);
-                res.body.should.have.property('message').eql('No token');
+                res.body.should.have.property('info').eql('No token');
                 done();
             });
     });
@@ -59,7 +59,7 @@ describe('Api', () => {
                 res.should.have.status(403);
                 res.body.should.be.a('object');
                 res.body.should.have.property('success').eql(false);
-                res.body.should.have.property('message');
+                res.body.should.have.property('info');
                 done();
             });
     });
@@ -76,7 +76,7 @@ describe('Api', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('success').eql(true);
-                        res.body.should.have.property('message');
+                        res.body.should.have.property('info');
                         done();
                     });
             });
@@ -90,7 +90,7 @@ describe('Api', () => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
                 res.body.should.have.property('success').eql(true);
-                res.body.should.have.property('message');
+                res.body.should.have.property('info');
                 done();
             });
     });

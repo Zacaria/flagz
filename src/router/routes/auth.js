@@ -23,9 +23,9 @@ router.post('/signup', (req, res) => {
             success: true,
             id
         }))
-        .catch(({message}) => res.json({
+        .catch(({info}) => res.json({
             success: false,
-            message
+            info
         }));
 
 });
@@ -46,18 +46,18 @@ router.post('/signin', (req, res) => {
     if (!name || !password) {
         return res.json({
             success: false,
-            message: PARAMS_ERROR
+            info: PARAMS_ERROR
         });
     }
     userService.authenticate({name, password})
-        .then(({token, message}) => res.json({
+        .then(({token, info}) => res.json({
             success: true,
-            message,
+            info,
             token
         }))
-        .catch(({message}) => res.json({
+        .catch(({info}) => res.json({
             success: false,
-            message
+            info
         }));
 });
 
@@ -66,7 +66,7 @@ router.use((req, res, next) => {
 
     if (!token) return res.status(403).json({
         success: false,
-        message: 'No token'
+        info: 'No token'
     });
 
     userService.validateToken({token})
@@ -74,9 +74,9 @@ router.use((req, res, next) => {
             req.user = decoded._doc;
             next();
         })
-        .catch(({message}) => res.status(403).json({
+        .catch(({info}) => res.status(403).json({
             success: false,
-            message
+            info
         }));
 });
 

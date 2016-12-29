@@ -18,9 +18,9 @@ router.get('/', (req, res) => {
             success: true,
             users
         }))
-        .catch(({message}) => res.json({
+        .catch(({info}) => res.json({
             success: false,
-            message
+            info
         }));
 });
 
@@ -40,10 +40,10 @@ router.get('/:id', (req, res) => {
                 user
             });
         })
-        .catch(({message}) => {
+        .catch(({info}) => {
             res.json({
                 success: false,
-                message
+                info
             })
         });
 });
@@ -67,7 +67,7 @@ router.patch('/friends', (req, res) => {
     if (operation !== INSERT && operation !== DELETE) {
         return res.json({
             success: false,
-            message: 'Unrecognized operation [insert | delete]'
+            info: 'Unrecognized operation [insert | delete]'
         });
     }
 
@@ -83,7 +83,7 @@ router.patch('/friends', (req, res) => {
         .catch((err) => {
             res.json({
                 success: false,
-                message: err
+                info: err
             })
         });
 });

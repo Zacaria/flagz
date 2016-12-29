@@ -6,7 +6,7 @@ export const createUser = ({name, password}) =>
     new Promise((resolve, reject) => {
         if (!name || !password) {
             return reject({
-                message: PARAMS_ERROR
+                info: PARAMS_ERROR
             });
         }
 
@@ -18,7 +18,7 @@ export const createUser = ({name, password}) =>
         user.save((err, user) => {
             if (err) {
                 return reject({
-                    message: err.errmsg
+                    info: err.errmsg
                 });
             }
 
@@ -32,29 +32,29 @@ export const authenticate = ({name, password}) =>
         User.findOne({name})
             .then(user => {
                 if (!user) return reject({
-                    message: 'user not found'
+                    info: 'user not found'
                 });
 
                 user.comparePassword(password, (err, isMatch) => {
                     if (err) return reject({
-                        message: err
+                        info: err
                     });
                     if (!isMatch) return reject({
-                        message: 'wrong password'
+                        info: 'wrong password'
                     });
 
                     const token = jwt.sign(user, SECRET, {
                         expiresIn: '10h'
                     });
                     return resolve({
-                        message: 'Enjoy your token',
+                        info: 'Enjoy your token',
                         token
                     });
                 });
             })
             .catch(err => {
                 reject({
-                    message: err
+                    info: err
                 });
             });
     });
@@ -63,7 +63,7 @@ export const validateToken = ({token}) =>
     new Promise((resolve, reject) => {
         jwt.verify(token, SECRET, (err, decoded) => {
             if (err) return reject({
-                message: 'wrong token, authentify at /signin'
+                info: 'wrong token, authentify at /signin'
             });
             resolve(decoded);
         })
@@ -74,7 +74,7 @@ export const find = () =>
         User.find({})
             .then((users) => resolve({users}))
             .catch(err => {
-                reject({message: err});
+                reject({info: err});
             });
     });
 
@@ -91,7 +91,7 @@ export const findOne = ({id}, safe = true) =>
                 if (!safe) resolve({user});
                 resolve({user: user.getUser()})
             })
-            .catch((err) => reject({message: err}));
+            .catch((err) => reject({info: err}));
     });
 
 export const patchFriends = ({user, operation, friendId}) =>

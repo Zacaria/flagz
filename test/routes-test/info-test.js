@@ -17,7 +17,7 @@ describe('Info', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
-                    res.body.should.have.property('message').eql('infos root');
+                    res.body.should.have.property('info').eql('infos root');
                     done();
                 });
         });

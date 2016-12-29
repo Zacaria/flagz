@@ -1,7 +1,7 @@
 import pjson from '~/package.json';
 
 export const websiteRoot = ({protocol, host}) => ({
-    message : 'Welcome guys',
+    info : 'Welcome guys',
     version : pjson.version,
     doc     : protocol + '://' + host + '/doc',
     db      : protocol + '://' + host + '/rockmongo',

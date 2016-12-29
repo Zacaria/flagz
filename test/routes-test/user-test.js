@@ -98,8 +98,8 @@ describe('User', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('message');
-                    res.body.message.should.be.a('object');
+                    res.body.should.have.property('info');
+                    res.body.info.should.be.a('object');
                     done();
                 });
         });
@@ -111,8 +111,8 @@ describe('User', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('message');
-                    res.body.message.should.be.a('string');
+                    res.body.should.have.property('info');
+                    res.body.info.should.be.a('string');
                     done();
                 });
         });
@@ -194,7 +194,7 @@ describe('User', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('message');
+                    res.body.should.have.property('info');
                     done();
                 });
         });
@@ -210,7 +210,7 @@ describe('User', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('message');
+                    res.body.should.have.property('info');
                     done();
                 });
         });

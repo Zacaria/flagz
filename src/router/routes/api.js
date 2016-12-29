@@ -16,7 +16,7 @@ router.use('/', authRoutes);
 router.get('/', (req, res) => {
     res.json({
         success: true,
-        message: 'api root'
+        info: 'api root'
     });
 });
 

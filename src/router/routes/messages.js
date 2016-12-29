@@ -3,6 +3,7 @@ import express from 'express';
 const router = express.Router();
 import User from '../../models/user';
 import Message from '../../models/message';
+import * as messageService from '../../services/message';
 import {EARTH_KM, PARAMS_ERROR} from '../../constants';
 
 /**
@@ -14,15 +15,15 @@ import {EARTH_KM, PARAMS_ERROR} from '../../constants';
  */
 //TODO : paginate !
 router.get('/', (req, res) => {
-    Message.find({})
-        .then((messages) => {
-            res.json(messages);
-        }, (err) => {
-            res.json({
-                success: false,
-                err    : err.errmsg
-            })
-        });
+    messageService.find()
+    .then(({messages}) => res.json({
+        success: true,
+        messages
+    }))
+    .catch(({info}) => res.json({
+        success: false,
+        info
+    }));
 });
 
 /**

@@ -48,7 +48,7 @@ describe('Message', () => {
                     res.should.have.status(403);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('message').eql('No token');
+                    res.body.should.have.property('info').eql('No token');
                     done();
                 });
         });
@@ -60,9 +60,24 @@ describe('Message', () => {
                     res.should.have.status(403);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('message');
+                    res.body.should.have.property('info');
                     done();
                 });
         });
+
+        it('should GET messages', (done) => {
+            chai.request(server)
+                .get(routePaths.ROUTE_MESSAGES)
+                .set('x-access-token', tokenAuth)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('success').eql(true);
+                    res.body.should.have.property('messages');
+                    res.body.messages.should.be.a('array');
+                    done();
+                });
+        });
+
     });
 });
