@@ -87,22 +87,23 @@ export const findOne = ({id}, safe = true) =>
     new Promise((resolve, reject) => {
         User.findOne({_id: id})
             .then((user) => {
-                if (!user) throw 'user not found';
-                if (!safe) resolve({user});
-                resolve({user: user.getUser()})
+                if (!user) return reject({info: 'user not found'});
+                if (!safe) return resolve({user});
+                return resolve({user: user.getUser()});
             })
             .catch((err) => reject({info: err}));
     });
 
 export const patchFriends = ({user, operation, friendId}) =>
     new Promise((resolve) => {
-        const indexOfFriend = user.friends.indexOf(friendId);
-
         if (operation === INSERT) {
-            if (indexOfFriend == -1)
-                user.friends = [...user.friends, friendId];
+            user.addFriend(friendId);
         } else if (operation === DELETE) {
-            user.friends.splice(indexOfFriend, 1);
+            user.removeFriend(friendId);
+        } else {
+            return reject({
+                info: 'unrecognized operation'
+            })
         }
         user.save()
             .then(() => {

@@ -15,10 +15,10 @@ const UserSchema = new Schema({
         type    : String,
         required: true
     },
-    friends   : [{
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    friends : [{
+        type    : Schema.Types.ObjectId,
+        ref     : 'User',
+        default : []
     }]
 });
 
@@ -45,13 +45,29 @@ UserSchema.methods.comparePassword = function (toTest, next) {
     });
 };
 
-UserSchema.methods.getUser = function() {
+UserSchema.methods.getUser = function () {
     const user = this;
     return {
-        id: user._id,
-        name: user.name,
+        id     : user._id,
+        name   : user.name,
         friends: user.friends
     };
+};
+
+UserSchema.methods.addFriend = function (friend) {
+    const user          = this;
+    const indexOfFriend = user.friends.indexOf(friend);
+    if (indexOfFriend == -1) {
+        user.friends = [...user.friends, friend];
+    }
+    return user;
+};
+
+UserSchema.methods.removeFriend = function (friend) {
+    const user          = this;
+    const indexOfFriend = user.friends.indexOf(friend);
+    user.friends.splice(indexOfFriend, 1);
+    return user;
 };
 
 const User = mongoose.model('User', UserSchema);
