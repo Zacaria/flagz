@@ -34,19 +34,16 @@ router.get('/', (req, res) => {
  * @apiPermission Authentified
  */
 router.get('/me', (req, res) => {
-    Message.find({
-            author: {
-                $eq: req.params.id
-            }
-        })
-        .then((messages) => {
-            res.json(messages);
-        }, (err) => {
-            res.json({
-                success: false,
-                err    : err.errmsg
-            })
-        });
+    const {user} = req;
+    messageService.findMe({user})
+    .then(({messages}) => res.json({
+        success: true,
+        messages
+    }))
+    .catch(({info}) => res.json({
+        success: false,
+        info
+    }));
 });
 
 /**
@@ -65,7 +62,7 @@ router.get('/@:center&r=:r', (req, res) => {
     if (!center) {
         res.json({
             success: false,
-            message: PARAMS_ERROR
+            info: PARAMS_ERROR
         });
     }
 
@@ -97,7 +94,7 @@ router.get('/@:center&r=:r', (req, res) => {
             });
         }, (err) => {
             res.json({
-                err    : err.message,
+                info    : err,
                 success: false
             });
         });
@@ -127,7 +124,7 @@ router.post('/', (req, res) => {
     if (!location || !text) {
         res.json({
             success: false,
-            message: PARAMS_ERROR
+            info: PARAMS_ERROR
         })
     }
 
@@ -149,7 +146,7 @@ router.post('/', (req, res) => {
         }, (err) => {
             res.json({
                 success: false,
-                message: err.errmsg
+                info: err
             });
         });
 });
