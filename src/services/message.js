@@ -7,8 +7,18 @@ export const find = () =>
                 resolve({messages});
             })
             .catch(err => {
-                reject({
-                    info: err
-                })
+                reject({info: err})
+            });
+    });
+
+export const findMe = ({user}) =>
+    new Promise((resolve, reject) => {
+        Message.find({
+                author:  user
+            })
+            .then((messages) => {
+                resolve({messages});
+            }, (err) => {
+                reject({info: err})
             });
     });
