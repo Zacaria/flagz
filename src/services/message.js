@@ -22,3 +22,27 @@ export const findMe = ({user}) =>
                 reject({info: err})
             });
     });
+
+export const addMessage = ({author, text, orientation, location, restricted}) =>
+    new Promise((resolve, reject) => {
+        const message = Message({
+            author,
+            text,
+            location,
+            orientation,
+            restricted
+        });
+
+        message
+            .save()
+            .then((message) => {
+                resolve({
+                    created: message
+                });
+            }, (err) => {
+                reject({
+                    info: err
+                });
+            });
+
+    });

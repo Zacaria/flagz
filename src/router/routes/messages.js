@@ -128,27 +128,21 @@ router.post('/', (req, res) => {
         })
     }
 
-    const message = Message({
-        author  : req.user,
+    messageService.addMessage({
+        author: req.user,
         text,
         location: location.split(',').map(Number),
         orientation,
         restricted
-    });
-
-    message
-        .save()
-        .then((message) => {
-            res.json({
-                success: true,
-                created: message
-            });
-        }, (err) => {
-            res.json({
-                success: false,
-                info: err
-            });
-        });
+    })
+    .then(({created}) => res.json({
+        success: true,
+        created
+    }))
+    .catch(({info}) => res.json({
+        success: false,
+        info
+    }));
 });
 
 export default router;
