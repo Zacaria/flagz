@@ -101,7 +101,7 @@ router.get('/me', (req, res) => {
  * @apiParam {String} center position of the center the circular range. ex : @48.7861405,2.3274749
  * @apiParam {Number} [r=200] range of the circular range in meters
  */
-router.get('/@:center&r=:r', (req, res) => {
+router.get(['/@:center&r=:r', '/@:center'], (req, res) => {
     const center = req.params.center.split(',').map(Number);
     const range  = req.params.r || 200;
     if (!center) {
@@ -114,15 +114,13 @@ router.get('/@:center&r=:r', (req, res) => {
     Message.find({
             $or     : [
                 {
-                    restricted: {
-                        $eq: false
-                    }
+                    restricted: false
                 },
                 {
                     $or: [{
                         author: req.user
                     }, {
-                        friends: req.user
+                        visibility: req.user
                     }]
                 }],
             location: {
