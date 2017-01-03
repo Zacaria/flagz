@@ -27,6 +27,12 @@ describe('Message', () => {
         friends : []
     });
 
+    const unrelated = new User({
+        name    : 'unrelated',
+        password: 'unrelated',
+        friends : []
+    });
+
     const publicMessage = {
         text       : 'coucou',
         orientation: {
@@ -42,16 +48,18 @@ describe('Message', () => {
             x: 2, y: 3, z: 7
         },
         restricted : true,
-        location   : '48.7861405,2.3274749'
+        location   : '48.7861405,2.3274748'
     };
 
     //filled in before hook
     let tokenAuthUser;
     let tokenAuthFriend;
+    let tokenAuthUnrelated;
     let currentUser;
 
     before((done) => { //Before each test we empty the database
         User.remove({})
+            .then(() => unrelated.save())
             .then(() => friend.save())
             .then(dbFriend => user.addFriend(dbFriend))
             .then(() => user.save())
@@ -69,6 +77,13 @@ describe('Message', () => {
             }))
             .then(({token}) => {
                 tokenAuthFriend = token;
+            })
+            .then(() => userService.authenticate({
+                name    : 'unrelated',
+                password: 'unrelated'
+            }))
+            .then(({token}) => {
+                tokenAuthUnrelated = token;
             })
             .then(() => done())
     });
@@ -173,14 +188,14 @@ describe('Message', () => {
                         res.body.messages[0].should.have.property('visibility').eql([]);
                         res.body.messages[0].should.have.property('restricted').eql(publicMessage.restricted);
                         res.body.messages[0].should.have.property('orientation').eql(publicMessage.orientation);
-                        res.body.messages[0].should.have.property('location').eql([48.7861405, 2.3274749]);
+                        res.body.messages[0].should.have.property('location').eql(publicMessage.location.split(',').map(Number));
                         res.body.messages[0].should.have.property('date');
                         res.body.messages[1].should.have.property('author').eql(currentUser._id.toString());
                         res.body.messages[1].should.have.property('text').eql(privateMessage.text);
                         res.body.messages[1].should.have.property('visibility').eql(friendsList);
                         res.body.messages[1].should.have.property('restricted').eql(privateMessage.restricted);
                         res.body.messages[1].should.have.property('orientation').eql(privateMessage.orientation);
-                        res.body.messages[1].should.have.property('location').eql([48.7861405, 2.3274749]);
+                        res.body.messages[1].should.have.property('location').eql(privateMessage.location.split(',').map(Number));
                         res.body.messages[1].should.have.property('date');
                         done();
                     });
@@ -205,7 +220,7 @@ describe('Message', () => {
                     res.body.created.should.have.property('visibility').eql([]);
                     res.body.created.should.have.property('restricted').eql(publicMessage.restricted);
                     res.body.created.should.have.property('orientation').eql(publicMessage.orientation);
-                    res.body.created.should.have.property('location').eql([48.7861405, 2.3274749]);
+                    res.body.created.should.have.property('location').eql(publicMessage.location.split(',').map(Number));
                     res.body.created.should.have.property('date');
                     done();
                 });
@@ -228,10 +243,97 @@ describe('Message', () => {
                     res.body.created.should.have.property('visibility').eql(friendsList);
                     res.body.created.should.have.property('restricted').eql(privateMessage.restricted);
                     res.body.created.should.have.property('orientation').eql(privateMessage.orientation);
-                    res.body.created.should.have.property('location').eql([48.7861405, 2.3274749]);
+                    res.body.created.should.have.property('location').eql(privateMessage.location.split(',').map(Number));
                     res.body.created.should.have.property('date');
                     done();
                 });
         });
-    })
+    });
+
+    describe('/GET messages/@:center&r=:r', () => {
+
+        it('should have an optional range parameter', (done) => {
+            chai.request(server)
+                .get(routePaths.ROUTE_MESSAGES + '/@4,1')
+                .set('x-access-token', tokenAuthUser)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('success').eql(true);
+                    res.body.should.have.property('messages');
+                    done();
+                });
+        });
+
+        describe('within the range', () => {
+            it('should return the two messages with the friend token', (done) => {
+                const friendsList = currentUser.friends.map((f) => f._id.toString());
+                chai.request(server)
+                    .get(routePaths.ROUTE_MESSAGES + '/@48.7861402,2.3274749&r=500')
+                    .set('x-access-token', tokenAuthFriend)
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('success').eql(true);
+                        res.body.should.have.property('messages');
+                        res.body.messages.should.be.a('array');
+                        res.body.messages.length.should.be.eql(2);
+                        res.body.messages[0].should.have.property('author').eql(currentUser._id.toString());
+                        res.body.messages[0].should.have.property('text').eql(publicMessage.text);
+                        res.body.messages[0].should.have.property('visibility').eql([]);
+                        res.body.messages[0].should.have.property('restricted').eql(publicMessage.restricted);
+                        res.body.messages[0].should.have.property('orientation').eql(publicMessage.orientation);
+                        res.body.messages[0].should.have.property('location').eql(publicMessage.location.split(',').map(Number));
+                        res.body.messages[0].should.have.property('date');
+                        res.body.messages[1].should.have.property('author').eql(currentUser._id.toString());
+                        res.body.messages[1].should.have.property('text').eql(privateMessage.text);
+                        res.body.messages[1].should.have.property('visibility').eql(friendsList);
+                        res.body.messages[1].should.have.property('restricted').eql(privateMessage.restricted);
+                        res.body.messages[1].should.have.property('orientation').eql(privateMessage.orientation);
+                        res.body.messages[1].should.have.property('location').eql(privateMessage.location.split(',').map(Number));
+                        res.body.messages[1].should.have.property('date');
+                        done();
+                    });
+            });
+
+            it('should return only the public message with the unrelated token', (done) => {
+                chai.request(server)
+                    .get(routePaths.ROUTE_MESSAGES + '/@48.7861402,2.3274749&r=500')
+                    .set('x-access-token', tokenAuthUnrelated)
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('success').eql(true);
+                        res.body.should.have.property('messages');
+                        res.body.messages.should.be.a('array');
+                        res.body.messages.length.should.be.eql(1);
+                        res.body.messages[0].should.have.property('author').eql(currentUser._id.toString());
+                        res.body.messages[0].should.have.property('text').eql(publicMessage.text);
+                        res.body.messages[0].should.have.property('visibility').eql([]);
+                        res.body.messages[0].should.have.property('restricted').eql(publicMessage.restricted);
+                        res.body.messages[0].should.have.property('orientation').eql(publicMessage.orientation);
+                        res.body.messages[0].should.have.property('location').eql(publicMessage.location.split(',').map(Number));
+                        res.body.messages[0].should.have.property('date');
+                        done();
+                    });
+            });
+        });
+
+        describe('outside the range', () => {
+
+            it('should return an empty array', (done) => {
+                chai.request(server)
+                    .get(routePaths.ROUTE_MESSAGES + '/@4,1&r=50')
+                    .set('x-access-token', tokenAuthUser)
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('success').eql(true);
+                        res.body.should.have.property('messages');
+                        res.body.messages.should.be.a('array').eql([]);
+                        done();
+                    });
+            });
+        });
+    });
 });
