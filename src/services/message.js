@@ -28,7 +28,7 @@ export const addMessage = ({author, text, orientation, location, restricted}) =>
         const message = Message({
             author,
             text,
-            location,
+            location: location.split(',').map(Number),
             orientation,
             restricted
         });
