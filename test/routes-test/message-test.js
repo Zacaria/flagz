@@ -28,15 +28,14 @@ describe('Message', () => {
 
     //filled in before hook
     let tokenAuth;
-
-    //let currentUser;
-    //let friend;
+    let currentUser;
 
     before((done) => { //Before each test we empty the database
         User.remove({})
             .then(() => friend.save())
             .then(dbFriend => user.addFriend(dbFriend))
             .then(() => user.save())
+            .then((u) => currentUser = u)
             .then(() => userService.authenticate({
                 name    : 'admin',
                 password: 'admin'
@@ -121,6 +120,15 @@ describe('Message', () => {
             location   : '48.7861405,2.3274749'
         };
 
+        const privateMessage = {
+            text       : 'coucou',
+            orientation: {
+                x: 2, y: 3, z: 7
+            },
+            restricted : true,
+            location   : '48.7861405,2.3274749'
+        };
+
         it('should add a public message', (done) => {
             chai.request(server)
                 .post(routePaths.ROUTE_MESSAGES)
@@ -133,14 +141,33 @@ describe('Message', () => {
                     res.body.should.have.property('created');
                     res.body.created.should.be.a('object');
                     res.body.created.should.have.property('author');
-                    res.body.created.should.have.property('text').eql('coucou');
+                    res.body.created.should.have.property('text').eql(publicMessage.text);
                     res.body.created.should.have.property('visibility').eql([]);
-                    res.body.created.should.have.property('restricted').eql(false);
-                    res.body.created.should.have.property('orientation').eql({
-                        x: 2,
-                        y: 3,
-                        z: 7
-                    });
+                    res.body.created.should.have.property('restricted').eql(publicMessage.restricted);
+                    res.body.created.should.have.property('orientation').eql(publicMessage.orientation);
+                    res.body.created.should.have.property('location').eql([48.7861405, 2.3274749]);
+                    res.body.created.should.have.property('date');
+                    done();
+                });
+        });
+
+        it('should add a private message', (done) => {
+            const friendsList = currentUser.friends.map((f) => f._id.toString());
+            chai.request(server)
+                .post(routePaths.ROUTE_MESSAGES)
+                .set('x-access-token', tokenAuth)
+                .send(privateMessage)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('success').eql(true);
+                    res.body.should.have.property('created');
+                    res.body.created.should.be.a('object');
+                    res.body.created.should.have.property('author');
+                    res.body.created.should.have.property('text').eql(privateMessage.text);
+                    res.body.created.should.have.property('visibility').eql(friendsList);
+                    res.body.created.should.have.property('restricted').eql(privateMessage.restricted);
+                    res.body.created.should.have.property('orientation').eql(privateMessage.orientation);
                     res.body.created.should.have.property('location').eql([48.7861405, 2.3274749]);
                     res.body.created.should.have.property('date');
                     done();
