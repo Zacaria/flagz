@@ -16,6 +16,5 @@ export const ROUTE_USERS_FRIENDS = '/api/users/friends';
 
 export const ROUTE_MESSAGES = '/api/messages';
 export const ROUTE_MESSAGES_ME = '/api/messages/me';
-export const ROUTE_MESSAGES_RANGE = '/api/messages/@:center&r=:r';
 
 
