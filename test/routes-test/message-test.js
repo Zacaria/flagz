@@ -5,6 +5,7 @@ import Message from '~/src/models/message';
 import * as userService from '~/src/services/user';
 import * as messageService from '~/src/services/message';
 import * as routePaths from '~/src/constants/routes';
+import * as constants from '~/src/constants';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -261,6 +262,20 @@ describe('Message', () => {
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(true);
                     res.body.should.have.property('messages');
+                    done();
+                });
+        });
+
+        it('should return success false with invalid center parameter', () => {
+            chai.request(server)
+                .get(routePaths.ROUTE_MESSAGES + '/@4')
+                .set('x-access-token', tokenAuthUser)
+                .end((err, res) => {
+                    console.log(res.body);
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('success').eql(false);
+                    res.body.should.have.property('info').eql(constants.PARAMS_ERROR);
                     done();
                 });
         });

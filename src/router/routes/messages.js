@@ -102,10 +102,11 @@ router.get('/me', (req, res) => {
  * @apiParam {Number} [r=200] range of the circular range in meters
  */
 router.get(['/@:center&r=:r', '/@:center'], (req, res) => {
+    // Transforms '48.7861405,2.3274749' into [48.7861405, 2.3274749]
     const center = req.params.center.split(',').map(Number);
     const range  = req.params.r || 200;
-    if (!center) {
-        res.json({
+    if (!center || !Array.isArray(center) || center.length != 2) {
+        return res.json({
             success: false,
             info: PARAMS_ERROR
         });
