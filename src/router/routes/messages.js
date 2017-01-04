@@ -4,7 +4,7 @@ const router = express.Router();
 import User from '../../models/user';
 import Message from '../../models/message';
 import * as messageService from '../../services/message';
-import {EARTH_KM, PARAMS_ERROR} from '../../constants';
+import {PARAMS_ERROR} from '../../constants';
 
 /**
  * @api {get} /api/messages Show all
@@ -111,36 +111,19 @@ router.get(['/@:center&r=:r', '/@:center'], (req, res) => {
         });
     }
 
-    Message.find({
-            $or     : [
-                {
-                    restricted: false
-                },
-                {
-                    $or: [{
-                        author: req.user
-                    }, {
-                        visibility: req.user
-                    }]
-                }],
-            location: {
-                $geoWithin: {
-                    $centerSphere: [center, range / EARTH_KM]
-                }
-            }
-        })
-        .
-        then((messages) => {
-            res.json({
-                messages,
-                success: true
-            });
-        }, (err) => {
-            res.json({
-                info    : err,
-                success: false
-            });
-        });
+    messageService.findInRange({
+        user: req.user,
+        center,
+        range
+    })
+    .then(({messages}) => res.json({
+        success: true,
+        messages
+    }))
+    .catch(({info}) => res.json({
+        success: false,
+        info
+    }));
 });
 
 export default router;
