@@ -5,9 +5,9 @@ import {PARAMS_ERROR} from '../constants/infos';
 
 export const createUser = ({name, password}) =>
     new Promise((resolve, reject) => {
-        if (!name || !password) {
+        if (password.length < 3) {
             return reject({
-                info: PARAMS_ERROR
+                info: 'Minimum password length is 3'
             });
         }
 

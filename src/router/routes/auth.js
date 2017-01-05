@@ -15,10 +15,16 @@ const router = express.Router();
  * @apiGroup User
  *
  * @apiParam name The user name
- * @apiParam password The password : bcrypt hashed
+ * @apiParam password The password : bcrypt hashed, min length : 3
  */
 router.post('/signup', (req, res) => {
     const {name, password} = req.body;
+    if (!name || !password || !name.trim() || !password.trim()) {
+        return res.json({
+            success: false,
+            info: PARAMS_ERROR
+        });
+    }
     userService.createUser({name, password})
         .then(({id}) => res.json({
             success: true,
@@ -44,7 +50,7 @@ router.post('/signup', (req, res) => {
  */
 router.post('/signin', (req, res) => {
     const {name, password} = req.body;
-    if (!name || !password) {
+    if (!name|| !password || !name.trim() || !password.trim()) {
         return res.json({
             success: false,
             info: PARAMS_ERROR

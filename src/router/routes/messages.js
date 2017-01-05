@@ -47,7 +47,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const {text, orientation, restricted, location} = req.body;
 
-    if (!location || !text) {
+    if (!location || !text || !location.trim() || !text.trim()) {
         res.json({
             success: false,
             info: PARAMS_ERROR
