@@ -36,7 +36,7 @@ describe('Auth', () => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('info').eql(PARAMS_ERROR);
+                    res.body.should.have.property('info').eql(infos.PARAMS_ERROR);
                     done();
                 });
         });
@@ -71,7 +71,7 @@ describe('Auth', () => {
     describe('/POST signin', () => {
 
         describe('with bad params', () => {
-            it('should fail on missing name parameter', (done) => {
+            it('should fail on missing parameter', (done) => {
                 chai.request(server)
                     .post(routePaths.ROUTE_AUTH_SIGNIN)
                     .send({
@@ -86,11 +86,12 @@ describe('Auth', () => {
                     });
             });
 
-            it('should fail on missing password parameter', (done) => {
+            it('should fail on empty parameter', (done) => {
                 chai.request(server)
                     .post(routePaths.ROUTE_AUTH_SIGNIN)
                     .send({
-                        name: 'wrong'
+                        name: 'wrong',
+                        password: ''
                     })
                     .end((err, res) => {
                         res.should.have.status(200);
