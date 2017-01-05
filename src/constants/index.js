@@ -10,5 +10,3 @@ export const EARTH_KM = 6378.1;
 
 export const INSERT = 'insert';
 export const DELETE = 'delete';
-
-export const PARAMS_ERROR = 'Not enough parameters check the doc !';

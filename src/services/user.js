@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
-import {PARAMS_ERROR, SECRET, INSERT, DELETE} from '../constants';
+import {SECRET, INSERT, DELETE} from '../constants';
+import {PARAMS_ERROR} from '../constants/infos';
 
 export const createUser = ({name, password}) =>
     new Promise((resolve, reject) => {

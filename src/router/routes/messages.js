@@ -4,7 +4,7 @@ const router = express.Router();
 import User from '../../models/user';
 import Message from '../../models/message';
 import * as messageService from '../../services/message';
-import {PARAMS_ERROR} from '../../constants';
+import {PARAMS_ERROR} from '../../constants/infos';
 
 /**
  * @api {get} /api/messages Show all

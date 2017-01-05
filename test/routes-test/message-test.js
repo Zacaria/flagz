@@ -5,7 +5,7 @@ import Message from '~/src/models/message';
 import * as userService from '~/src/services/user';
 import * as messageService from '~/src/services/message';
 import * as routePaths from '~/src/constants/routes';
-import * as constants from '~/src/constants';
+import * as infos from '~/src/constants/infos';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -275,7 +275,7 @@ describe('Message', () => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('info').eql(constants.PARAMS_ERROR);
+                    res.body.should.have.property('info').eql(infos.PARAMS_ERROR);
                     done();
                 });
         });

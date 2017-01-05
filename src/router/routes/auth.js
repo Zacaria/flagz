@@ -2,7 +2,8 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../../models/user';
-import {PARAMS_ERROR, SECRET} from '../../constants';
+import {SECRET} from '../../constants';
+import {PARAMS_ERROR} from '../../constants/infos';
 import * as userService from '../../services/user';
 
 const router = express.Router();
