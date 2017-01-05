@@ -4,7 +4,7 @@ const router = express.Router();
 import User from '../../models/user';
 import Message from '../../models/message';
 import * as messageService from '../../services/message';
-import {PARAMS_ERROR} from '../../constants/infos';
+import {PARAMS_ERROR} from '../../constants/exceptions';
 
 /**
  * @api {get} /api/messages Show all
@@ -20,9 +20,9 @@ router.get('/', (req, res) => {
         success: true,
         messages
     }))
-    .catch(({info}) => res.json({
+    .catch(({exception}) => res.json({
         success: false,
-        info
+        exception
     }));
 });
 
@@ -50,7 +50,7 @@ router.post('/', (req, res) => {
     if (!location || !text || !location.trim() || !text.trim()) {
         return res.json({
             success: false,
-            info: PARAMS_ERROR
+            exception: PARAMS_ERROR
         })
     }
 
@@ -65,9 +65,9 @@ router.post('/', (req, res) => {
             success: true,
             created
         }))
-        .catch(({info}) => res.json({
+        .catch(({exception}) => res.json({
             success: false,
-            info
+            exception
         }));
 });
 
@@ -85,9 +85,9 @@ router.get('/me', (req, res) => {
         success: true,
         messages
     }))
-    .catch(({info}) => res.json({
+    .catch(({exception}) => res.json({
         success: false,
-        info
+        exception
     }));
 });
 
@@ -108,7 +108,7 @@ router.get(['/@:center&r=:r', '/@:center'], (req, res) => {
     if (!center || !Array.isArray(center) || center.length != 2) {
         return res.json({
             success: false,
-            info: PARAMS_ERROR
+            exception: PARAMS_ERROR
         });
     }
 
@@ -121,9 +121,9 @@ router.get(['/@:center&r=:r', '/@:center'], (req, res) => {
         success: true,
         messages
     }))
-    .catch(({info}) => res.json({
+    .catch(({exception}) => res.json({
         success: false,
-        info
+        exception
     }));
 });
 

@@ -46,7 +46,7 @@ describe('Api', () => {
                 res.should.have.status(403);
                 res.body.should.be.a('object');
                 res.body.should.have.property('success').eql(false);
-                res.body.should.have.property('info').eql('No token');
+                res.body.should.have.property('exception').eql('No token');
                 done();
             });
     });
@@ -58,7 +58,7 @@ describe('Api', () => {
                 res.should.have.status(403);
                 res.body.should.be.a('object');
                 res.body.should.have.property('success').eql(false);
-                res.body.should.have.property('info');
+                res.body.should.have.property('exception');
                 done();
             });
     });

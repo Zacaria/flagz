@@ -7,7 +7,7 @@ export const createUser = ({name, password}) =>
     new Promise((resolve, reject) => {
         if (password.length < 3) {
             return reject({
-                info: 'Minimum password length is 3'
+                exception: 'Minimum password length is 3'
             });
         }
 
@@ -19,7 +19,7 @@ export const createUser = ({name, password}) =>
         user.save((err, user) => {
             if (err) {
                 return reject({
-                    info: err.errmsg
+                    exception: err.errmsg
                 });
             }
 
@@ -33,15 +33,15 @@ export const authenticate = ({name, password}) =>
         User.findOne({name})
             .then(user => {
                 if (!user) return reject({
-                    info: 'user not found'
+                    exception: 'user not found'
                 });
 
                 user.comparePassword(password, (err, isMatch) => {
                     if (err) return reject({
-                        info: err
+                        exception: err
                     });
                     if (!isMatch) return reject({
-                        info: 'wrong password'
+                        exception: 'wrong password'
                     });
 
                     const token = jwt.sign(user, SECRET, {
@@ -55,7 +55,7 @@ export const authenticate = ({name, password}) =>
             })
             .catch(err => {
                 reject({
-                    info: err
+                    exception: err
                 });
             });
     });
@@ -64,7 +64,7 @@ export const validateToken = ({token}) =>
     new Promise((resolve, reject) => {
         jwt.verify(token, SECRET, (err, decoded) => {
             if (err) return reject({
-                info: 'wrong token, authentify at /signin'
+                exception: 'wrong token, authentify at /signin'
             });
             resolve(decoded);
         })
@@ -75,7 +75,7 @@ export const find = () =>
         User.find({})
             .then((users) => resolve({users}))
             .catch(err => {
-                reject({info: err});
+                reject({exception: err});
             });
     });
 
@@ -88,11 +88,11 @@ export const findOne = ({id}, safe = true) =>
     new Promise((resolve, reject) => {
         User.findOne({_id: id})
             .then((user) => {
-                if (!user) return reject({info: 'user not found'});
+                if (!user) return reject({exception: 'user not found'});
                 if (!safe) return resolve({user});
                 return resolve({user: user.getUser()});
             })
-            .catch((err) => reject({info: err}));
+            .catch((err) => reject({exception: err}));
     });
 
 export const patchFriends = ({user, operation, friendId}) =>
@@ -103,7 +103,7 @@ export const patchFriends = ({user, operation, friendId}) =>
             user.removeFriend(friendId);
         } else {
             return reject({
-                info: 'unrecognized operation'
+                exception: 'unrecognized operation'
             })
         }
         user.save()

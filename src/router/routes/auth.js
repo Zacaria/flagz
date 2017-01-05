@@ -3,7 +3,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../../models/user';
 import {SECRET} from '../../constants';
-import {PARAMS_ERROR} from '../../constants/infos';
+import {PARAMS_ERROR} from '../../constants/exceptions';
 import * as userService from '../../services/user';
 
 const router = express.Router();
@@ -22,7 +22,7 @@ router.post('/signup', (req, res) => {
     if (!name || !password || !name.trim() || !password.trim()) {
         return res.json({
             success: false,
-            info: PARAMS_ERROR
+            exception: PARAMS_ERROR
         });
     }
     userService.createUser({name, password})
@@ -30,9 +30,9 @@ router.post('/signup', (req, res) => {
             success: true,
             id
         }))
-        .catch(({info}) => res.json({
+        .catch(({exception}) => res.json({
             success: false,
-            info
+            exception
         }));
 
 });
@@ -53,7 +53,7 @@ router.post('/signin', (req, res) => {
     if (!name|| !password || !name.trim() || !password.trim()) {
         return res.json({
             success: false,
-            info: PARAMS_ERROR
+            exception: PARAMS_ERROR
         });
     }
     userService.authenticate({name, password})
@@ -62,9 +62,9 @@ router.post('/signin', (req, res) => {
             info,
             token
         }))
-        .catch(({info}) => res.json({
+        .catch(({exception}) => res.json({
             success: false,
-            info
+            exception
         }));
 });
 
@@ -73,7 +73,7 @@ router.use((req, res, next) => {
 
     if (!token) return res.status(403).json({
         success: false,
-        info: 'No token'
+        exception: 'No token'
     });
 
     userService.validateToken({token})
@@ -81,9 +81,9 @@ router.use((req, res, next) => {
             req.user = decoded._doc;
             next();
         })
-        .catch(({info}) => res.status(403).json({
+        .catch(({exception}) => res.status(403).json({
             success: false,
-            info
+            exception
         }));
 });
 

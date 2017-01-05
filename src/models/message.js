@@ -50,7 +50,7 @@ MessageSchema.pre('save', function (next) {
             }, err => {
                 next({
                     success: false,
-                    message: 'author not found',
+                    exception: 'author not found',
                     err    : err.errmsg
                 });
             })

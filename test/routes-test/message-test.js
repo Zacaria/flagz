@@ -5,7 +5,7 @@ import Message from '~/src/models/message';
 import * as userService from '~/src/services/user';
 import * as messageService from '~/src/services/message';
 import * as routePaths from '~/src/constants/routes';
-import * as infos from '~/src/constants/infos';
+import * as exceptions from '~/src/constants/exceptions';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -121,7 +121,7 @@ describe('Message', () => {
                     res.should.have.status(403);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('info').eql('No token');
+                    res.body.should.have.property('exception').eql('No token');
                     done();
                 });
         });
@@ -133,7 +133,7 @@ describe('Message', () => {
                     res.should.have.status(403);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('info');
+                    res.body.should.have.property('exception');
                     done();
                 });
         });
@@ -234,7 +234,7 @@ describe('Message', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('success').eql(false);
-                        res.body.should.have.property('info').eql(infos.PARAMS_ERROR);
+                        res.body.should.have.property('exception').eql(exceptions.PARAMS_ERROR);
                         done();
                     });
             });
@@ -248,7 +248,7 @@ describe('Message', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('success').eql(false);
-                        res.body.should.have.property('info').eql(infos.PARAMS_ERROR);
+                        res.body.should.have.property('exception').eql(exceptions.PARAMS_ERROR);
                         done();
                     });
             });
@@ -326,7 +326,7 @@ describe('Message', () => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('info').eql(infos.PARAMS_ERROR);
+                    res.body.should.have.property('exception').eql(exceptions.PARAMS_ERROR);
                     done();
                 });
         });

@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'test';
 
 import User from '~/src/models/user';
 import * as routePaths from '~/src/constants/routes';
-import * as infos from '~/src/constants/infos';
+import * as exceptions from '~/src/constants/exceptions';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -36,7 +36,7 @@ describe('Auth', () => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('info').eql(infos.PARAMS_ERROR);
+                    res.body.should.have.property('exception').eql(exceptions.PARAMS_ERROR);
                     done();
                 });
         });
@@ -62,7 +62,7 @@ describe('Auth', () => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('info');
+                    res.body.should.have.property('exception');
                     done();
                 });
         });
@@ -81,7 +81,7 @@ describe('Auth', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('success').eql(false);
-                        res.body.should.have.property('info').eql(infos.PARAMS_ERROR);
+                        res.body.should.have.property('exception').eql(exceptions.PARAMS_ERROR);
                         done();
                     });
             });
@@ -97,7 +97,7 @@ describe('Auth', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('success').eql(false);
-                        res.body.should.have.property('info').eql(infos.PARAMS_ERROR);
+                        res.body.should.have.property('exception').eql(exceptions.PARAMS_ERROR);
                         done();
                     });
             });
@@ -115,7 +115,7 @@ describe('Auth', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('success').eql(false);
-                        res.body.should.have.property('info');
+                        res.body.should.have.property('exception');
                         done();
                     });
             });
@@ -131,7 +131,7 @@ describe('Auth', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('success').eql(false);
-                        res.body.should.have.property('info');
+                        res.body.should.have.property('exception');
                         done();
                     });
             });

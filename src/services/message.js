@@ -8,7 +8,7 @@ export const find = () =>
                 resolve({messages});
             })
             .catch(err => {
-                reject({info: err})
+                reject({exception: err})
             });
     });
 
@@ -20,7 +20,7 @@ export const findMe = ({user}) =>
             .then((messages) => {
                 resolve({messages});
             }, (err) => {
-                reject({info: err})
+                reject({exception: err})
             });
     });
 
@@ -50,7 +50,7 @@ export const findInRange = ({user, center, range}) =>
                 });
             }, (err) => {
                 reject({
-                    info: err
+                    exception: err
                 });
             });
     });
@@ -73,7 +73,7 @@ export const addMessage = ({author, text, orientation, location, restricted}) =>
                 });
             }, (err) => {
                 reject({
-                    info: err
+                    exception: err
                 });
             });
 
