@@ -271,7 +271,6 @@ describe('Message', () => {
                 .get(routePaths.ROUTE_MESSAGES + '/@4')
                 .set('x-access-token', tokenAuthUser)
                 .end((err, res) => {
-                    console.log(res.body);
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
