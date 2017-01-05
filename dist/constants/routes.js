@@ -21,4 +21,3 @@ var ROUTE_USERS_FRIENDS = exports.ROUTE_USERS_FRIENDS = '/api/users/friends';
 
 var ROUTE_MESSAGES = exports.ROUTE_MESSAGES = '/api/messages';
 var ROUTE_MESSAGES_ME = exports.ROUTE_MESSAGES_ME = '/api/messages/me';
-var ROUTE_MESSAGES_RANGE = exports.ROUTE_MESSAGES_RANGE = '/api/messages/@:center&r=:r';

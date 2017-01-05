@@ -270,7 +270,7 @@ define({ "api": [
             "group": "Parameter",
             "optional": false,
             "field": "password",
-            "description": "<p>The password : bcrypt hashed</p>"
+            "description": "<p>The password : bcrypt hashed, min length : 3</p>"
           }
         ]
       }

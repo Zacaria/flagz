@@ -18,6 +18,8 @@ var _user2 = _interopRequireDefault(_user);
 
 var _constants = require('../../constants');
 
+var _infos = require('../../constants/infos');
+
 var _user3 = require('../../services/user');
 
 var userService = _interopRequireWildcard(_user3);
@@ -35,13 +37,19 @@ var router = _express2.default.Router();
  * @apiGroup User
  *
  * @apiParam name The user name
- * @apiParam password The password : bcrypt hashed
+ * @apiParam password The password : bcrypt hashed, min length : 3
  */
 router.post('/signup', function (req, res) {
     var _req$body = req.body,
         name = _req$body.name,
         password = _req$body.password;
 
+    if (!name || !password || !name.trim() || !password.trim()) {
+        return res.json({
+            success: false,
+            info: _infos.PARAMS_ERROR
+        });
+    }
     userService.createUser({ name: name, password: password }).then(function (_ref) {
         var id = _ref.id;
         return res.json({
@@ -73,10 +81,10 @@ router.post('/signin', function (req, res) {
         name = _req$body2.name,
         password = _req$body2.password;
 
-    if (!name || !password) {
+    if (!name || !password || !name.trim() || !password.trim()) {
         return res.json({
             success: false,
-            info: _constants.PARAMS_ERROR
+            info: _infos.PARAMS_ERROR
         });
     }
     userService.authenticate({ name: name, password: password }).then(function (_ref3) {

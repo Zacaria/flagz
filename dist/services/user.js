@@ -15,17 +15,17 @@ var _user2 = _interopRequireDefault(_user);
 
 var _constants = require('../constants');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _infos = require('../constants/infos');
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var createUser = exports.createUser = function createUser(_ref) {
     var name = _ref.name,
         password = _ref.password;
     return new Promise(function (resolve, reject) {
-        if (!name || !password) {
+        if (password.length < 3) {
             return reject({
-                info: _constants.PARAMS_ERROR
+                info: 'Minimum password length is 3'
             });
         }
 
@@ -111,9 +111,9 @@ var findOne = exports.findOne = function findOne(_ref4) {
     var safe = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
     return new Promise(function (resolve, reject) {
         _user2.default.findOne({ _id: id }).then(function (user) {
-            if (!user) throw 'user not found';
-            if (!safe) resolve({ user: user });
-            resolve({ user: user.getUser() });
+            if (!user) return reject({ info: 'user not found' });
+            if (!safe) return resolve({ user: user });
+            return resolve({ user: user.getUser() });
         }).catch(function (err) {
             return reject({ info: err });
         });
@@ -125,12 +125,14 @@ var patchFriends = exports.patchFriends = function patchFriends(_ref5) {
         operation = _ref5.operation,
         friendId = _ref5.friendId;
     return new Promise(function (resolve) {
-        var indexOfFriend = user.friends.indexOf(friendId);
-
         if (operation === _constants.INSERT) {
-            if (indexOfFriend == -1) user.friends = [].concat(_toConsumableArray(user.friends), [friendId]);
+            user.addFriend(friendId);
         } else if (operation === _constants.DELETE) {
-            user.friends.splice(indexOfFriend, 1);
+            user.removeFriend(friendId);
+        } else {
+            return reject({
+                info: 'unrecognized operation'
+            });
         }
         user.save().then(function () {
             resolve({

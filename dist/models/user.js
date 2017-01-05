@@ -18,6 +18,8 @@ var _mongoose2 = _interopRequireDefault(_mongoose);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var Schema = _mongoose2.default.Schema;
 
 var UserSchema = new Schema({
@@ -33,7 +35,7 @@ var UserSchema = new Schema({
     friends: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        default: []
     }]
 });
 
@@ -67,6 +69,22 @@ UserSchema.methods.getUser = function () {
         name: user.name,
         friends: user.friends
     };
+};
+
+UserSchema.methods.addFriend = function (friend) {
+    var user = this;
+    var indexOfFriend = user.friends.indexOf(friend);
+    if (indexOfFriend == -1) {
+        user.friends = [].concat(_toConsumableArray(user.friends), [friend]);
+    }
+    return user;
+};
+
+UserSchema.methods.removeFriend = function (friend) {
+    var user = this;
+    var indexOfFriend = user.friends.indexOf(friend);
+    user.friends.splice(indexOfFriend, 1);
+    return user;
 };
 
 var User = _mongoose2.default.model('User', UserSchema);

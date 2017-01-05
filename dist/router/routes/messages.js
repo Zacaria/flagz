@@ -20,7 +20,7 @@ var _message3 = require('../../services/message');
 
 var messageService = _interopRequireWildcard(_message3);
 
-var _constants = require('../../constants');
+var _infos = require('../../constants/infos');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -54,78 +54,6 @@ router.get('/', function (req, res) {
 });
 
 /**
- * @api {get} /api/messages/me Show my messages
- * @apiDescription Shows all messages of connected user
- * @apiName Message user
- * @apiGroup Message
- * @apiPermission Authentified
- */
-router.get('/me', function (req, res) {
-    _message2.default.find({
-        author: {
-            $eq: req.params.id
-        }
-    }).then(function (messages) {
-        res.json(messages);
-    }, function (err) {
-        res.json({
-            success: false,
-            err: err.errmsg
-        });
-    });
-});
-
-/**
- * @api {get} /api/messages/@:center&r=:r Aggregate within sphere
- * @apiDescription Shows all messages within a circular range
- * @apiName Message search
- * @apiGroup Message
- * @apiPermission Authentified
- *
- * @apiParam {String} center position of the center the circular range. ex : @48.7861405,2.3274749
- * @apiParam {Number} [r=200] range of the circular range in meters
- */
-router.get('/@:center&r=:r', function (req, res) {
-    var center = req.params.center.split(',').map(Number);
-    var range = req.params.r || 200;
-    if (!center) {
-        res.json({
-            success: false,
-            message: _constants.PARAMS_ERROR
-        });
-    }
-
-    _message2.default.find({
-        $or: [{
-            restricted: {
-                $eq: false
-            }
-        }, {
-            $or: [{
-                author: req.user
-            }, {
-                friends: req.user
-            }]
-        }],
-        location: {
-            $geoWithin: {
-                $centerSphere: [center, range / _constants.EARTH_KM]
-            }
-        }
-    }).then(function (messages) {
-        res.json({
-            messages: messages,
-            success: true
-        });
-    }, function (err) {
-        res.json({
-            err: err.message,
-            success: false
-        });
-    });
-});
-
-/**
  * @api {post} /api/messages Create
  * @apiDescription create a message
  * @apiName Message creation
@@ -151,30 +79,95 @@ router.post('/', function (req, res) {
         location = _req$body.location;
 
 
-    if (!location || !text) {
-        res.json({
+    if (!location || !text || !location.trim() || !text.trim()) {
+        return res.json({
             success: false,
-            message: _constants.PARAMS_ERROR
+            info: _infos.PARAMS_ERROR
         });
     }
 
-    var message = (0, _message2.default)({
+    messageService.addMessage({
         author: req.user,
         text: text,
-        location: location.split(',').map(Number),
+        location: location,
         orientation: orientation,
         restricted: restricted
-    });
-
-    message.save().then(function (message) {
-        res.json({
+    }).then(function (_ref3) {
+        var created = _ref3.created;
+        return res.json({
             success: true,
-            created: message
+            created: created
         });
-    }, function (err) {
-        res.json({
+    }).catch(function (_ref4) {
+        var info = _ref4.info;
+        return res.json({
             success: false,
-            message: err.errmsg
+            info: info
+        });
+    });
+});
+
+/**
+ * @api {get} /api/messages/me Show my messages
+ * @apiDescription Shows all messages of connected user
+ * @apiName Message user
+ * @apiGroup Message
+ * @apiPermission Authentified
+ */
+router.get('/me', function (req, res) {
+    var user = req.user;
+
+    messageService.findMe({ user: user }).then(function (_ref5) {
+        var messages = _ref5.messages;
+        return res.json({
+            success: true,
+            messages: messages
+        });
+    }).catch(function (_ref6) {
+        var info = _ref6.info;
+        return res.json({
+            success: false,
+            info: info
+        });
+    });
+});
+
+/**
+ * @api {get} /api/messages/@:center&r=:r Aggregate within sphere
+ * @apiDescription Shows all messages within a circular range
+ * @apiName Message search
+ * @apiGroup Message
+ * @apiPermission Authentified
+ *
+ * @apiParam {String} center position of the center the circular range. ex : @48.7861405,2.3274749
+ * @apiParam {Number} [r=200] range of the circular range in meters
+ */
+router.get(['/@:center&r=:r', '/@:center'], function (req, res) {
+    // Transforms '48.7861405,2.3274749' into [48.7861405, 2.3274749]
+    var center = req.params.center.split(',').map(Number);
+    var range = req.params.r || 200;
+    if (!center || !Array.isArray(center) || center.length != 2) {
+        return res.json({
+            success: false,
+            info: _infos.PARAMS_ERROR
+        });
+    }
+
+    messageService.findInRange({
+        user: req.user,
+        center: center,
+        range: range
+    }).then(function (_ref7) {
+        var messages = _ref7.messages;
+        return res.json({
+            success: true,
+            messages: messages
+        });
+    }).catch(function (_ref8) {
+        var info = _ref8.info;
+        return res.json({
+            success: false,
+            info: info
         });
     });
 });
