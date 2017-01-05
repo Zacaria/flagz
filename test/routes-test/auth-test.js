@@ -26,7 +26,7 @@ describe('Auth', () => {
     };
 
     describe('/POST signup', () => {
-        it('it should not create a user with unsufficient params', (done) => {
+        it('should not create a user with unsufficient params', (done) => {
             chai.request(server)
                 .post(routePaths.ROUTE_AUTH_SINGUP)
                 .send({
@@ -41,7 +41,7 @@ describe('Auth', () => {
                 });
         });
 
-        it('it should create a user', (done) => {
+        it('should create a user', (done) => {
             chai.request(server)
                 .post(routePaths.ROUTE_AUTH_SINGUP)
                 .send(user)
@@ -54,7 +54,7 @@ describe('Auth', () => {
                 });
         });
 
-        it('it should not create a user existing name', (done) => {
+        it('should not create a user existing name', (done) => {
             chai.request(server)
                 .post(routePaths.ROUTE_AUTH_SINGUP)
                 .send(user)
@@ -70,7 +70,7 @@ describe('Auth', () => {
 
     describe('/POST signin', () => {
 
-        it('it should not authenticate with user not existing', (done) => {
+        it('should not authenticate with user not existing', (done) => {
             chai.request(server)
                 .post(routePaths.ROUTE_AUTH_SIGNIN)
                 .send({
@@ -86,7 +86,7 @@ describe('Auth', () => {
                 });
         });
 
-        it('it should not authenticate with wrong pw', (done) => {
+        it('should not authenticate with wrong pw', (done) => {
             chai.request(server)
                 .post(routePaths.ROUTE_AUTH_SIGNIN)
                 .send({
@@ -102,7 +102,7 @@ describe('Auth', () => {
                 });
         });
 
-        it('it should return a token', (done) => {
+        it('should return a token', (done) => {
             chai.request(server)
                 .post(routePaths.ROUTE_AUTH_SIGNIN)
                 .send(user)

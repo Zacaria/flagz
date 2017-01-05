@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 
 describe('Info', () => {
     describe('/GET root', () => {
-        it('it should GET info root message', (done) => {
+        it('should GET info root message', (done) => {
             chai.request(server)
                 .get(routePaths.ROUTE_INFO)
                 .end((err, res) => {
