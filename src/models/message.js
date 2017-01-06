@@ -1,6 +1,7 @@
 'use strict';
 
 import mongoose from 'mongoose';
+import {USER_NOT_FOUND} from '~/src/constants/exceptions';
 import User from './user';
 const Schema = mongoose.Schema;
 
@@ -50,7 +51,7 @@ MessageSchema.pre('save', function (next) {
             }, err => {
                 next({
                     success: false,
-                    exception: 'author not found',
+                    exception: USER_NOT_FOUND,
                     err    : err.errmsg
                 });
             })

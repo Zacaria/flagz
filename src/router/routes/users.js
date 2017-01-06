@@ -4,6 +4,7 @@ const router = express.Router();
 import User from '../../models/user';
 import * as userService from '../../services/user';
 import {INSERT, DELETE} from '../../constants';
+import {OP_NOT_FOUND} from '~/src/constants/exceptions';
 
 /**
  * @api {get} /api/users show users
@@ -67,7 +68,7 @@ router.patch('/friends', (req, res) => {
     if (operation !== INSERT && operation !== DELETE) {
         return res.json({
             success: false,
-            exception: 'Unrecognized operation [insert | delete]'
+            exception: OP_NOT_FOUND
         });
     }
 
@@ -80,10 +81,10 @@ router.patch('/friends', (req, res) => {
                 user
             });
         })
-        .catch((err) => {
+        .catch(({exception}) => {
             res.json({
                 success: false,
-                exception: err
+                exception
             })
         });
 });

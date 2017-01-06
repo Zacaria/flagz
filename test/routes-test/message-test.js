@@ -121,7 +121,7 @@ describe('Message', () => {
                     res.should.have.status(403);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('exception').eql('No token');
+                    res.body.should.have.property('exception').eql(exceptions.BAD_TOKEN);
                     done();
                 });
         });
@@ -133,7 +133,7 @@ describe('Message', () => {
                     res.should.have.status(403);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('exception');
+                    res.body.should.have.property('exception').eql(exceptions.BAD_TOKEN);
                     done();
                 });
         });

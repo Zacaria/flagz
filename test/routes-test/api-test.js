@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test';
 import User from '~/src/models/user';
 import * as userService from '~/src/services/user';
 import * as routePaths from '~/src/constants/routes';
+import * as exceptions from '~/src/constants/exceptions';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -46,7 +47,7 @@ describe('Api', () => {
                 res.should.have.status(403);
                 res.body.should.be.a('object');
                 res.body.should.have.property('success').eql(false);
-                res.body.should.have.property('exception').eql('No token');
+                res.body.should.have.property('exception').eql(exceptions.BAD_TOKEN);
                 done();
             });
     });
@@ -58,7 +59,7 @@ describe('Api', () => {
                 res.should.have.status(403);
                 res.body.should.be.a('object');
                 res.body.should.have.property('success').eql(false);
-                res.body.should.have.property('exception');
+                res.body.should.have.property('exception').eql(exceptions.BAD_TOKEN);
                 done();
             });
     });

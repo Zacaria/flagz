@@ -2,6 +2,7 @@ process.env.NODE_ENV = 'test';
 
 import User from '~/src/models/user';
 import * as routePaths from '~/src/constants/routes';
+import * as exceptions from '~/src/constants/exceptions';
 
 import chai from'chai';
 import chaiHttp from 'chai-http';
@@ -111,7 +112,7 @@ describe('User', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('exception');
+                    res.body.should.have.property('exception').eql(exceptions.USER_NOT_FOUND);
                     res.body.exception.should.be.a('string');
                     done();
                 });
@@ -193,7 +194,7 @@ describe('User', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('exception');
+                    res.body.should.have.property('exception').eql(exceptions.OP_NOT_FOUND);
                     done();
                 });
         });
@@ -209,7 +210,7 @@ describe('User', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.have.property('success').eql(false);
-                    res.body.should.have.property('exception');
+                    res.body.should.have.property('exception').eql(exceptions.USER_NOT_FOUND);
                     done();
                 });
         });

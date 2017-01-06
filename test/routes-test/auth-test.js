@@ -41,6 +41,22 @@ describe('Auth', () => {
                 });
         });
 
+        it('should fail on too small password parameter', (done) => {
+            chai.request(server)
+                .post(routePaths.ROUTE_AUTH_SINGUP)
+                .send({
+                    name: 'wrong',
+                    password: 'bg'
+                })
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('success').eql(false);
+                    res.body.should.have.property('exception').eql(exceptions.MIN_PW_LENGTH);
+                    done();
+                });
+        });
+
         it('should create a user', (done) => {
             chai.request(server)
                 .post(routePaths.ROUTE_AUTH_SINGUP)
@@ -115,7 +131,7 @@ describe('Auth', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('success').eql(false);
-                        res.body.should.have.property('exception');
+                        res.body.should.have.property('exception').eql(exceptions.USER_NOT_FOUND);
                         done();
                     });
             });
@@ -131,7 +147,7 @@ describe('Auth', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('success').eql(false);
-                        res.body.should.have.property('exception');
+                        res.body.should.have.property('exception').eql(exceptions.BAD_PW);
                         done();
                     });
             });

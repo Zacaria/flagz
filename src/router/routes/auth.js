@@ -5,6 +5,7 @@ import User from '../../models/user';
 import {SECRET} from '../../constants';
 import {PARAMS_ERROR} from '../../constants/exceptions';
 import * as userService from '../../services/user';
+import {BAD_TOKEN} from '~/src/constants/exceptions';
 
 const router = express.Router();
 
@@ -73,7 +74,7 @@ router.use((req, res, next) => {
 
     if (!token) return res.status(403).json({
         success: false,
-        exception: 'No token'
+        exception: BAD_TOKEN
     });
 
     userService.validateToken({token})

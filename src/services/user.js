@@ -1,13 +1,13 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import {SECRET, INSERT, DELETE} from '../constants';
-import {PARAMS_ERROR} from '../constants/infos';
+import {OP_NOT_FOUND, MIN_PW_LENGTH, USER_NOT_FOUND, BAD_PW, BAD_TOKEN} from '~/src/constants/exceptions';
 
 export const createUser = ({name, password}) =>
     new Promise((resolve, reject) => {
         if (password.length < 3) {
             return reject({
-                exception: 'Minimum password length is 3'
+                exception: MIN_PW_LENGTH
             });
         }
 
@@ -33,7 +33,7 @@ export const authenticate = ({name, password}) =>
         User.findOne({name})
             .then(user => {
                 if (!user) return reject({
-                    exception: 'user not found'
+                    exception: USER_NOT_FOUND
                 });
 
                 user.comparePassword(password, (err, isMatch) => {
@@ -41,7 +41,7 @@ export const authenticate = ({name, password}) =>
                         exception: err
                     });
                     if (!isMatch) return reject({
-                        exception: 'wrong password'
+                        exception: BAD_PW
                     });
 
                     const token = jwt.sign(user, SECRET, {
@@ -64,7 +64,7 @@ export const validateToken = ({token}) =>
     new Promise((resolve, reject) => {
         jwt.verify(token, SECRET, (err, decoded) => {
             if (err) return reject({
-                exception: 'wrong token, authentify at /signin'
+                exception: BAD_TOKEN
             });
             resolve(decoded);
         })
@@ -88,7 +88,7 @@ export const findOne = ({id}, safe = true) =>
     new Promise((resolve, reject) => {
         User.findOne({_id: id})
             .then((user) => {
-                if (!user) return reject({exception: 'user not found'});
+                if (!user) return reject({exception: USER_NOT_FOUND});
                 if (!safe) return resolve({user});
                 return resolve({user: user.getUser()});
             })
@@ -103,7 +103,7 @@ export const patchFriends = ({user, operation, friendId}) =>
             user.removeFriend(friendId);
         } else {
             return reject({
-                exception: 'unrecognized operation'
+                exception: OP_NOT_FOUND
             })
         }
         user.save()
