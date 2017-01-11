@@ -20,7 +20,7 @@ var _message3 = require('../../services/message');
 
 var messageService = _interopRequireWildcard(_message3);
 
-var _infos = require('../../constants/infos');
+var _exceptions = require('../../constants/exceptions');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -45,10 +45,10 @@ router.get('/', function (req, res) {
             messages: messages
         });
     }).catch(function (_ref2) {
-        var info = _ref2.info;
+        var exception = _ref2.exception;
         return res.json({
             success: false,
-            info: info
+            exception: exception
         });
     });
 });
@@ -82,7 +82,7 @@ router.post('/', function (req, res) {
     if (!location || !text || !location.trim() || !text.trim()) {
         return res.json({
             success: false,
-            info: _infos.PARAMS_ERROR
+            exception: _exceptions.PARAMS_ERROR
         });
     }
 
@@ -99,10 +99,10 @@ router.post('/', function (req, res) {
             created: created
         });
     }).catch(function (_ref4) {
-        var info = _ref4.info;
+        var exception = _ref4.exception;
         return res.json({
             success: false,
-            info: info
+            exception: exception
         });
     });
 });
@@ -124,10 +124,10 @@ router.get('/me', function (req, res) {
             messages: messages
         });
     }).catch(function (_ref6) {
-        var info = _ref6.info;
+        var exception = _ref6.exception;
         return res.json({
             success: false,
-            info: info
+            exception: exception
         });
     });
 });
@@ -149,7 +149,7 @@ router.get(['/@:center&r=:r', '/@:center'], function (req, res) {
     if (!center || !Array.isArray(center) || center.length != 2) {
         return res.json({
             success: false,
-            info: _infos.PARAMS_ERROR
+            exception: _exceptions.PARAMS_ERROR
         });
     }
 
@@ -164,10 +164,10 @@ router.get(['/@:center&r=:r', '/@:center'], function (req, res) {
             messages: messages
         });
     }).catch(function (_ref8) {
-        var info = _ref8.info;
+        var exception = _ref8.exception;
         return res.json({
             success: false,
-            info: info
+            exception: exception
         });
     });
 });

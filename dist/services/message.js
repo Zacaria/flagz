@@ -18,7 +18,7 @@ var find = exports.find = function find() {
         _message2.default.find({}).then(function (messages) {
             resolve({ messages: messages });
         }).catch(function (err) {
-            reject({ info: err });
+            reject({ exception: err });
         });
     });
 };
@@ -31,7 +31,7 @@ var findMe = exports.findMe = function findMe(_ref) {
         }).then(function (messages) {
             resolve({ messages: messages });
         }, function (err) {
-            reject({ info: err });
+            reject({ exception: err });
         });
     });
 };
@@ -62,7 +62,7 @@ var findInRange = exports.findInRange = function findInRange(_ref2) {
             });
         }, function (err) {
             reject({
-                info: err
+                exception: err
             });
         });
     });
@@ -89,7 +89,7 @@ var addMessage = exports.addMessage = function addMessage(_ref3) {
             });
         }, function (err) {
             reject({
-                info: err
+                exception: err
             });
         });
     });

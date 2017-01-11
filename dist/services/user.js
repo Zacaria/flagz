@@ -15,7 +15,7 @@ var _user2 = _interopRequireDefault(_user);
 
 var _constants = require('../constants');
 
-var _infos = require('../constants/infos');
+var _exceptions = require('~/src/constants/exceptions');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25,7 +25,7 @@ var createUser = exports.createUser = function createUser(_ref) {
     return new Promise(function (resolve, reject) {
         if (password.length < 3) {
             return reject({
-                info: 'Minimum password length is 3'
+                exception: _exceptions.MIN_PW_LENGTH
             });
         }
 
@@ -37,7 +37,7 @@ var createUser = exports.createUser = function createUser(_ref) {
         user.save(function (err, user) {
             if (err) {
                 return reject({
-                    info: err.errmsg
+                    exception: err.errmsg
                 });
             }
 
@@ -52,15 +52,15 @@ var authenticate = exports.authenticate = function authenticate(_ref2) {
     return new Promise(function (resolve, reject) {
         _user2.default.findOne({ name: name }).then(function (user) {
             if (!user) return reject({
-                info: 'user not found'
+                exception: _exceptions.USER_NOT_FOUND
             });
 
             user.comparePassword(password, function (err, isMatch) {
                 if (err) return reject({
-                    info: err
+                    exception: err
                 });
                 if (!isMatch) return reject({
-                    info: 'wrong password'
+                    exception: _exceptions.BAD_PW
                 });
 
                 var token = _jsonwebtoken2.default.sign(user, _constants.SECRET, {
@@ -73,7 +73,7 @@ var authenticate = exports.authenticate = function authenticate(_ref2) {
             });
         }).catch(function (err) {
             reject({
-                info: err
+                exception: err
             });
         });
     });
@@ -84,7 +84,7 @@ var validateToken = exports.validateToken = function validateToken(_ref3) {
     return new Promise(function (resolve, reject) {
         _jsonwebtoken2.default.verify(token, _constants.SECRET, function (err, decoded) {
             if (err) return reject({
-                info: 'wrong token, authentify at /signin'
+                exception: _exceptions.BAD_TOKEN
             });
             resolve(decoded);
         });
@@ -96,7 +96,7 @@ var find = exports.find = function find() {
         _user2.default.find({}).then(function (users) {
             return resolve({ users: users });
         }).catch(function (err) {
-            reject({ info: err });
+            reject({ exception: err });
         });
     });
 };
@@ -111,11 +111,11 @@ var findOne = exports.findOne = function findOne(_ref4) {
     var safe = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
     return new Promise(function (resolve, reject) {
         _user2.default.findOne({ _id: id }).then(function (user) {
-            if (!user) return reject({ info: 'user not found' });
+            if (!user) return reject({ exception: _exceptions.USER_NOT_FOUND });
             if (!safe) return resolve({ user: user });
             return resolve({ user: user.getUser() });
         }).catch(function (err) {
-            return reject({ info: err });
+            return reject({ exception: err });
         });
     });
 };
@@ -131,7 +131,7 @@ var patchFriends = exports.patchFriends = function patchFriends(_ref5) {
             user.removeFriend(friendId);
         } else {
             return reject({
-                info: 'unrecognized operation'
+                exception: _exceptions.OP_NOT_FOUND
             });
         }
         user.save().then(function () {

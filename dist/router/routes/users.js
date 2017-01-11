@@ -18,6 +18,8 @@ var userService = _interopRequireWildcard(_user3);
 
 var _constants = require('../../constants');
 
+var _exceptions = require('~/src/constants/exceptions');
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -40,10 +42,10 @@ router.get('/', function (req, res) {
             users: users
         });
     }).catch(function (_ref2) {
-        var info = _ref2.info;
+        var exception = _ref2.exception;
         return res.json({
             success: false,
-            info: info
+            exception: exception
         });
     });
 });
@@ -65,11 +67,11 @@ router.get('/:id', function (req, res) {
             user: user
         });
     }).catch(function (_ref4) {
-        var info = _ref4.info;
+        var exception = _ref4.exception;
 
         res.json({
             success: false,
-            info: info
+            exception: exception
         });
     });
 });
@@ -96,7 +98,7 @@ router.patch('/friends', function (req, res) {
     if (operation !== _constants.INSERT && operation !== _constants.DELETE) {
         return res.json({
             success: false,
-            info: 'Unrecognized operation [insert | delete]'
+            exception: _exceptions.OP_NOT_FOUND
         });
     }
 
@@ -112,10 +114,12 @@ router.patch('/friends', function (req, res) {
             success: true,
             user: user
         });
-    }).catch(function (err) {
+    }).catch(function (_ref7) {
+        var exception = _ref7.exception;
+
         res.json({
             success: false,
-            info: err
+            exception: exception
         });
     });
 });

@@ -8,6 +8,8 @@ var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
+var _exceptions = require('~/src/constants/exceptions');
+
 var _user = require('./user');
 
 var _user2 = _interopRequireDefault(_user);
@@ -63,7 +65,7 @@ MessageSchema.pre('save', function (next) {
         }, function (err) {
             next({
                 success: false,
-                message: 'author not found',
+                exception: _exceptions.USER_NOT_FOUND,
                 err: err.errmsg
             });
         });
