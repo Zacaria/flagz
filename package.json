@@ -1,6 +1,6 @@
 {
   "name": "flagz",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "flagz POC",
   "main": "./bin/www.js",
   "scripts": {
