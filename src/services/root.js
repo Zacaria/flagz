@@ -1,4 +1,4 @@
-import pjson from '~/package.json';
+import pjson from '../../package.json';
 
 export const websiteRoot = ({protocol, host}) => ({
     info : 'Welcome guys',

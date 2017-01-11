@@ -4,7 +4,7 @@ const router = express.Router();
 import User from '../../models/user';
 import * as userService from '../../services/user';
 import {INSERT, DELETE} from '../../constants';
-import {OP_NOT_FOUND} from '~/src/constants/exceptions';
+import {OP_NOT_FOUND} from '../../constants/exceptions';
 
 /**
  * @api {get} /api/users show users

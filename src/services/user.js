@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import {SECRET, INSERT, DELETE} from '../constants';
-import {OP_NOT_FOUND, MIN_PW_LENGTH, USER_NOT_FOUND, BAD_PW, BAD_TOKEN} from '~/src/constants/exceptions';
+import {OP_NOT_FOUND, MIN_PW_LENGTH, USER_NOT_FOUND, BAD_PW, BAD_TOKEN} from '../constants/exceptions';
 
 export const createUser = ({name, password}) =>
     new Promise((resolve, reject) => {

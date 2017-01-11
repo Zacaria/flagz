@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose from 'mongoose';
-import {USER_NOT_FOUND} from '~/src/constants/exceptions';
+import {USER_NOT_FOUND} from '../constants/exceptions';
 import User from './user';
 const Schema = mongoose.Schema;
 
