@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.websiteRoot = undefined;
 
-var _package = require('~/package.json');
+var _package = require('../../package.json');
 
 var _package2 = _interopRequireDefault(_package);
 

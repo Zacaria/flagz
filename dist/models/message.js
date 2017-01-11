@@ -8,7 +8,7 @@ var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
-var _exceptions = require('~/src/constants/exceptions');
+var _exceptions = require('../constants/exceptions');
 
 var _user = require('./user');
 

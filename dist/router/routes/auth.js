@@ -8,23 +8,11 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
-var _jsonwebtoken = require('jsonwebtoken');
-
-var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
-
-var _user = require('../../models/user');
-
-var _user2 = _interopRequireDefault(_user);
-
-var _constants = require('../../constants');
-
 var _exceptions = require('../../constants/exceptions');
 
-var _user3 = require('../../services/user');
+var _user = require('../../services/user');
 
-var userService = _interopRequireWildcard(_user3);
-
-var _exceptions2 = require('~/src/constants/exceptions');
+var userService = _interopRequireWildcard(_user);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -111,7 +99,7 @@ router.use(function (req, res, next) {
 
     if (!token) return res.status(403).json({
         success: false,
-        exception: _exceptions2.BAD_TOKEN
+        exception: _exceptions.BAD_TOKEN
     });
 
     userService.validateToken({ token: token }).then(function (decoded) {

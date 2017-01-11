@@ -15,7 +15,7 @@ var _user2 = _interopRequireDefault(_user);
 
 var _constants = require('../constants');
 
-var _exceptions = require('~/src/constants/exceptions');
+var _exceptions = require('../constants/exceptions');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
