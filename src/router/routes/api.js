@@ -4,6 +4,7 @@ const router = express.Router();
 import authRoutes from './auth';
 import usersRoutes from './users';
 import messagesRoutes from './messages';
+import {API_ROOT} from '../../constants/infos';
 
 
 router.use('/', authRoutes);
@@ -16,7 +17,7 @@ router.use('/', authRoutes);
 router.get('/', (req, res) => {
     res.json({
         success: true,
-        info: 'api root'
+        info: API_ROOT
     });
 });
 
