@@ -25,7 +25,10 @@ router.get('/', (req, res) => {
  * @apiSampleRequest /
  */
 router.get('/gen', (req, res) => {
-    res.json(gen());
+    res.json({
+        success: true,
+        data: gen()
+    });
 });
 
 /**
