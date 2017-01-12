@@ -4,8 +4,7 @@
   "description": "flagz POC",
   "main": "./bin/www.js",
   "scripts": {
-    "start": "forever start --uid flagz -a -w -t --killSignal=SIGTERM dist/bin/cluster.js --exitcrash ",
-    "stop": "forever stop flagz",
+    "start": "node_modules/.bin/pm2 dist/bin/cluster.js -i max",
     "serve": "nodemon src/bin/www.js --exec babel-node",
     "clean": "rm -rf dist/ && mkdir dist",
     "deploy-patch": "npm version patch",
@@ -36,6 +35,7 @@
     "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.7.1",
     "morgan": "^1.7.0",
+    "pm2": "^2.2.3",
     "wavy": "^1.0.3"
   },
   "devDependencies": {
