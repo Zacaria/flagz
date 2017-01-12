@@ -4,7 +4,8 @@
   "description": "flagz POC",
   "main": "./bin/www.js",
   "scripts": {
-    "start": "node_modules/.bin/pm2 start dist/bin/cluster.js -i max --watch",
+    "start": "node_modules/.bin/pm2 start dist/bin/www.js -i 0 --watch",
+    "stop": "node_modules/.bin/pm2 restart all",
     "serve": "nodemon src/bin/www.js --exec babel-node",
     "clean": "rm -rf dist/ && mkdir dist",
     "deploy-patch": "npm version patch",
