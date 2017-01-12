@@ -2,6 +2,7 @@
 
 import express from 'express';
 import {gen, poll} from '../../constants/sys-info';
+import {INFO_ROOT} from '../../constants/infos';
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ const router = express.Router();
  */
 router.get('/', (req, res) => {
     res.json({
-        info: 'infos root'
+        info: INFO_ROOT
     });
 });
 
