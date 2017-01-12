@@ -8,3 +8,4 @@ Object.defineProperty(exports, "__esModule", {
  */
 
 var WELCOME = exports.WELCOME = 'Welcome guys !';
+var INFO_ROOT = exports.INFO_ROOT = 'infos root';

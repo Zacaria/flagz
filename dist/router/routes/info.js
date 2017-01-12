@@ -10,6 +10,8 @@ var _express2 = _interopRequireDefault(_express);
 
 var _sysInfo = require('../../constants/sys-info');
 
+var _infos = require('../../constants/infos');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
@@ -22,7 +24,7 @@ var router = _express2.default.Router();
  */
 router.get('/', function (req, res) {
     res.json({
-        info: 'infos root'
+        info: _infos.INFO_ROOT
     });
 });
 
