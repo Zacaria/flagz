@@ -20,6 +20,8 @@ var _messages = require('./messages');
 
 var _messages2 = _interopRequireDefault(_messages);
 
+var _infos = require('../../constants/infos');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
@@ -35,7 +37,7 @@ router.use('/', _auth2.default);
 router.get('/', function (req, res) {
     res.json({
         success: true,
-        info: 'api root'
+        info: _infos.API_ROOT
     });
 });
 

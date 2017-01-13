@@ -35,7 +35,10 @@ router.get('/', function (req, res) {
  * @apiSampleRequest /
  */
 router.get('/gen', function (req, res) {
-    res.json((0, _sysInfo.gen)());
+    res.json({
+        success: true,
+        data: (0, _sysInfo.gen)()
+    });
 });
 
 /**
